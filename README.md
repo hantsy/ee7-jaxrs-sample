@@ -1,0 +1,1 @@
+An example application using AngularJS/Bootstrap as frontend and Java EE7/JAXRS as REST API producer.

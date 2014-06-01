@@ -1,0 +1,33 @@
+<div class="page-header"
+	<h1>Member Registration</h1>
+</div>
+<!-- Standard HTML form, with the submit function bound to the register() function defined in the the controller -->
+<form id="reg" ng-submit="register()" role="form">
+	<fieldset>
+		<legend>Register a member:</legend>
+		<!-- Each input is bound to a property on the prototype newMember object -->
+		<div class="form-group">
+			<label for="name" class="control-label col-md-4">Name:</label> <input type="text" name="name"
+				id="name" ng-model="member.name" placeholder="Your Name" required
+				autofocus /> <span class="error" ng-show="errors.name">{{errors.name}}</span>
+		</div>
+		<div class="form-group">
+			<label for="email">Email:</label> <input type="email" name="email"
+				id="email" ng-model="member.email" placeholder="Your Email" required />
+			<span class="error" ng-show="errors.email">{{errors.email}}</span>
+		</div>
+		<div class="form-group">
+			<label for="phoneNumber">Phone #:</label> <input type="tel"
+				name="phoneNumber" id="phoneNumber" ng-model="member.phoneNumber"
+				pattern="[0-9]{10,12}" placeholder="Your Phone #" required /> <span
+				class="error" ng-show="errors.phoneNumber">{{errors.phoneNumber}}</span>
+		</div>
+
+		<!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+		<div class="form-group">
+			<input type="submit" id="register" value="Register" /> <input
+				type="button" ng-click="reset()" name="cancel" id="cancel"
+				value="Cancel" />
+		</div>
+	</fieldset>
+</form>
