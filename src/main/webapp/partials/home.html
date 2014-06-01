@@ -19,7 +19,7 @@
 		</tr>
 	</thead>
 	<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
-	<tr ng-repeat="member in members | orderBy:order">
+	<tr ng-repeat="member in members ">
 		<td>{{member.id}}</td>
 		<td>{{member.name}}</td>
 		<td>{{member.email}}</td>
@@ -75,10 +75,9 @@
 				<div class="modal-footer">
 					<div class="form-group">
 						<div class="col-md-offset-4 col-md-8">
-							<input class="btn btn-success" type="submit" id="register"
-								value="Register" /> <input class="btn btn-default"
-								type="button" ng-click="reset()" name="cancel" id="cancel"
-								value="Cancel" />
+							<button class="btn btn-success" type="submit" id="register"> <msg key="save"/> </button> 						
+							<button class="btn btn-default"
+								type="button" ng-click="reset()" name="cancel" id="cancel"> <msg key="cancel"/> </button>
 						</div>
 					</div>
 				</div>

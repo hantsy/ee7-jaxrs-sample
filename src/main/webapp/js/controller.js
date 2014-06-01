@@ -80,6 +80,7 @@
 	    }
 
 	    $scope.editMember=function(idx){
+	    	console.log('selected index @'+idx);
 	    	$scope.member= $scope.members[idx];
 	    	$('#memberDialog').modal('show');
 	    }
