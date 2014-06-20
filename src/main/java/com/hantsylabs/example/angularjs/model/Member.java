@@ -36,7 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @SuppressWarnings("serial")
 @Entity
 @XmlRootElement
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name="users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Member implements Serializable {
 
     @Id
@@ -52,6 +52,10 @@ public class Member implements Serializable {
     @NotEmpty
     @Email
     private String email;
+     
+    @NotNull
+    @NotEmpty
+    private String password;
 
     @NotNull
     @Size(min = 10, max = 12)
@@ -82,8 +86,16 @@ public class Member implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public String getPassword() {
+		return password;
+	}
 
-    public String getPhoneNumber() {
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPhoneNumber() {
         return phoneNumber;
     }
 
