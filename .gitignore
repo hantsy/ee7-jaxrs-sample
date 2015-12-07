@@ -1,5 +1,7 @@
-/.externalToolBuilders
-/.settings
-/target
-/.classpath
-/.project
+.externalToolBuilders
+.settings
+target
+.classpath
+.project
+nb-configuration.xml
+.tern-project

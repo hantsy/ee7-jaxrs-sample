@@ -1,0 +1,41 @@
+<header ng-switch on="$location.path().indexOf('/Posts/new') > -1">
+    <h3 ng-switch-when="true">Create a new Post</h3>
+    <h3 ng-switch-when="false">View or edit Post</h3>
+</header>
+<form id="PostForm" name="PostForm" class="form-horizontal" role="form">
+    
+
+    <div class="form-group" ng-class="{'has-error': PostForm.title.$invalid}">
+        <label for="title" class="col-sm-2 control-label">Title</label>
+        <div id="titleControls" class="col-sm-10">
+            <input id="title" name="title" type="text" required ng-maxlength="200" class="form-control" ng-model="post.title" placeholder="Enter the Post Title"></input>
+            <span class="help-block error" ng-show="PostForm.title.$error.required">required</span> 
+            <span class="help-block error" ng-show="PostForm.title.$error.maxlength">maximum length is 200</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PostForm.content.$invalid}">
+        <label for="content" class="col-sm-2 control-label">Content</label>
+        <div id="contentControls" class="col-sm-10">
+            <input id="content" name="content" type="text" required class="form-control" ng-model="post.content" placeholder="Enter the Post Content"></input>
+            <span class="help-block error" ng-show="PostForm.content.$error.required">required</span> 
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PostForm.createdOn.$invalid}">
+        <label for="createdOn" class="col-sm-2 control-label">Created On</label>
+        <div id="createdOnControls" class="col-sm-10">
+            <date id="createdOn" name="createdOn" ng-model="post.createdOn" placeholder="Enter the Post Created On"></date>
+            <span class="help-block error" ng-show="PostForm.createdOn.$error.dateFormat">does not match format "yyyy-MM-dd" (e.g. 2013-12-01)</span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="savePost" name="savePost" class="btn btn-primary" ng-disabled="isClean() || PostForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deletePost" name="deletePost" class="btn btn-danger" ng-show="post.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>
