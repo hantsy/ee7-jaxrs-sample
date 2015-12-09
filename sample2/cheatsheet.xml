@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<cheatsheet title="JBoss Forge: Scaffold angularjs-ee7-sample2, a web application from scratch">
+	<intro>
+		<description>
+			This example shows you how to create a new web
+			application with Java EE 6 for JBoss Enterprise Application Platform
+			6.1 or later, using JBoss Forge. The created project will use HTML5,
+			AngularJS, Bootstrap 3, JAX-RS 1.1, CDI 1.0, EJB 3.1, JPA 2.0 and
+			Bean Validation 1.0. It includes a persistence configuration with
+			basic transaction support to help you get started with the development
+			of the application.
+			<br/>
+			To begin, we will review the technologies used in this example:
+		<br /><br />
+		<b>HTML5</b>
+		<br /><br />
+		HTML5 refers to both the latest version of HTML language, and the set
+		of associated technologies that allow creation of web applications and
+		sites that target various devices.
+		<br />
+		<br />
+		<b>AngularJS</b>
+		<br />
+		<br />
+		AngularJS is a client-side web framework for writing dynamic web apps.
+		It extends the HTML syntax to abstract away the DOM structure, associated CSS and behavior for components displayed on a page.
+		It allows you to bind events on the declared components to JavaScript logic through the MVC support in AngularJS.
+		<br />
+		<br />
+		<b>Bootstrap 3</b>
+		<br />
+		<br />
+		Bootstrap 3 is a client-side web framework for developing responsive mobile-first projects for the web.
+		It provides CSS classes to provide global styles and a grid system, and reusable components based on CSS and JavaScript that can be used for faster and easier web development.
+		<br />
+		<br />
+		<b>JAX-RS: The Java API for RESTful Web Services</b>
+		<br />
+		<br />
+		JAX-RS is a new specification in Java EE 6. It allows application
+		developers to easily expose Java services as RESTful web services.
+		<br />
+		<br />
+		<b>EJB 3.1</b>
+		<br />
+		<br />
+		EJB 3.1 is an update to the EJB specification for Java EE 6. It allows
+		application developers to build business components and services.
+		<br />
+		<br />
+		<b>JPA 2.0</b>
+		<br />
+		<br />
+		JPA 2.0 is an update to the JPA specification for Java EE 6. It
+		provides application developers with an object-relational mapping
+		facility to manage relational data.
+		<br />
+		<br />
+		<b>Bean Validation</b>
+		<br />
+		<br />
+		Bean Validation is a new specification in Java EE 6, inspired by
+		Hibernate Validator. It allows application developers to specify
+		constraints once (often in their domain model), and have them applied
+		in all layers of the application, protecting data and giving useful
+		feedback to users.
+		</description>
+	</intro>
+	<item title="Getting started with JBoss Forge" skip="false" dialog="true">
+		<description>
+			JBoss Forge is a rapid application development tool that allows you to run commands that 
+            generate classes and code, and perform other development-related tasks.
+			You can use either a GUI within your IDE that offers a familiar wizard and dialog based UI, 
+            or a shell/terminal interface to perform operations using textual commands.
+            <br />
+            <br />
+            <b>Some things to note:</b>
+            <br />
+            <br />
+			To open the Forge menu, execute the Forge shortcut (<b>Ctrl + 4</b> or <b>Cmd + 4</b>). This starts Forge, if it is not 
+			already started. <b>Note:</b> You can optionally start Forge execute commands from the Forge console.
+            <br />
+            <br />
+			Forge uses "contextual command activation", this means that opening the Forge menu while a
+            project is selected will activate different commands than launching it with nothing selected; 
+            similarly, opening the Forge menu while a Java source file is selected will display 
+            more commands than would have been presented when a project folder were the current selection.
+			<br/>
+			<br/>
+			Forge wizards gather all required input before making changes to the project. If you haven't clicked <b>Finish</b>, you can 
+			always <b>Cancel</b> a command before it is executed. (Some commands can also be cancelled while they are running, but 
+			this may leave partially completed tasks.)
+			<br/>
+			<br/>
+		</description>
+		<command
+            required="true"
+            returns="currentProject"
+            serialization="org.jboss.tools.project.examples.cheatsheet.getProjectForCheatsheet"/>
+	</item>
+	<item skip="false" title="The angularjs-ee7-sample2 example in depth" dialog="true">
+		<description>
+			The angularjs-ee7-sample2 application contains a simple pre-created JPA
+			entity.
+			<br />
+			<br />
+			Let&apos;s start by looking at the persistence deployment descriptor.
+			By now, we&apos;re very used to seeing a
+			<b>persistence.xml</b>
+			file (which can be found in the
+			<b>src/main/resources</b>
+			directory of the example), which sets up JPA to use the example
+			datasource in JBoss Enterprise Application Platform 6.
+		</description>
+		<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/resources/META-INF/persistence.xml,fromLine=1,toLine=16)" />
+	</item>
+	<item skip="true" title="Member.java" dialog="true">
+		<description>
+			Next, let's take a look at the pre-created Member entity (JPA):
+		</description>
+		<subitem
+			label="As required by the Java Persistence API (JPA) specification, Member.java is defined as an entity by adding the @Entity annotation to its class definition."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=30)" />
+		</subitem>
+		<subitem
+			label="The Member entity has a field, called 'name', that is configured to map to a column named 'full_name' in the 'Member' database table."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=42,toLine=43)" />
+		</subitem>
+		<subitem
+			label="The Member entity also has a field, called 'phoneNumber', that is configured to map to a column named 'phone_number' in the 'Member' database table."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=48,toLine=49)" />
+		</subitem>
+		<subitem
+			label="The Bean Validation specification allows constraints to be defined once (on fields and methods of the @Entity class) and applied everywhere, including any web service and persistence layers (such as JAX-RS or JPA). Here we constrain the person's 'name' and 'phoneNumber' to a certain size and regular expression. "
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=40,toLine=41)" />
+		</subitem>
+		<subitem
+			label="The @Digits, @NotNull and @Size annotations are further examples of constraints that may be used."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=45,toLine=47)" />
+		</subitem>
+		<subitem
+			label="Accessor and mutators allow other classes to fetch or set the column values."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/model/Member.java,fromLine=51,toLine=73)" />
+		</subitem>
+
+	</item>
+	<item title="Generating REST resources" dialog="true">
+		<description>
+			We will now proceed to generate a REST resource for this JPA entity. This will expose CREATE, READ, UPDATE, and DELETE operations
+			via a RESTful web service that clients (such as a JavaScript web application or remote client) can use to manipulate the contents of the database.
+			<br/><br/>
+			
+			Select the example project in the Project Explorer and launch the Forge menu through the shortcut (<b>Ctrl + 4</b> or <b>Cmd + 4</b>).
+			<br/><br/>
+			
+			Type <b>rest</b> in the command filter textbox located at the top of the menu and select the entry titled <b>REST: Generate Endpoints From Entities</b>. 
+			Click it or press the `Enter` key to execute the command. Forge will, again, intelligently detect that JAX-RS is not set up 
+			in the project, and help us configure the required dependencies and files. Since we will be deploying our application to a Java EE 6 application server 
+			(JBoss EAP 6), we'll setup <b>JAX-RS 1.1</b> - this means we can stick to the defaults.
+			<br/><br/>
+			
+			Click <b>Next</b> to continue - again, Forge detects that the project lacks EJB (Enterprise Java Beans) support and prompts us to set it up. 
+			Choose <b>EJB 3.1</b> (the default), then click <b>Next</b> to proceed to the JPA entity selection dialog.
+			
+			<br/><br/>
+			You'll now be presented with a dialog to select the JPA entities for which corresponding REST resources will be created.
+			Select the <b>Member</b> entity in the list of entities (it should be the only entity in the list); use default values
+			for the remaining inputs. Click <b>Finish</b> to execute the wizard, setup JAX-RS for the project, and create the JAX-RS resource for the Member entity. 
+		</description>
+        <command
+            required="false"
+            serialization="org.jboss.tools.forge.ui.runForgeCommand(org.jboss.tools.forge.ui.runForgeCommand.commandName=rest-generate-endpoints-from-entities)"/>
+	</item>
+	<item skip="true" title="MemberEndpoint.java" dialog="true">
+		<description>
+			Let's now take a look at the MemberEndpoint JAX-RS resource class, created by JBoss Forge.
+		</description>
+		<subitem
+			label="Firstly, the endpoint is a @Stateless Session Bean (SLSB), which starts a new transaction context (if absent) for any method invoked from the bean."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/rest/MemberEndpoint.java,fromLine=28)" />
+		</subitem>
+		<subitem
+			label="The endpoint also injects the JPA PersistenceContext to access the database through the already defined JPA entity. The unitName property is mapped to a datasource in the project's persistence.xml"
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/rest/MemberEndpoint.java,fromLine=32)" />
+		</subitem>
+		<subitem
+			label="The endpoint contains methods to CREATE, READ, UPDATE and DELETE the contents of the 'Member' JPA entity. As previously indicated, it uses the injected JPA persistence context to perform these operations."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/rest/MemberEndpoint.java,fromLine=35,toLine=111)" />
+		</subitem>
+		<subitem
+			label="The methods in the endpoint are mapped to the equivalent HTTP verbs - POST, GET, PUT and DELETE. Any HTTP client can invoke these methods to manipulate instances of the 'Member' entity, and thus, the contents of the database."
+			skip="true" dialog="true">
+			<command required="false"
+				serialization="org.jboss.tools.project.examples.cheatsheet.openFileInEditor(path=/${currentProject}/src/main/java/com/hantsylabs/angularjs/ee7/sample/rest/MemberEndpoint.java,fromLine=35,toLine=111)" />
+		</subitem>
+	</item>
+	<item title="Generating a HTML5 based scaffold" dialog="true">
+		<description>
+			Now, let's continue by generating the AngularJS based scaffold. Scaffolding can be used to interact with the database through 
+			a HTML5 front-end. This front-end will use the newly created REST resource, `MemberEndpoint.java`, to exchange data with the server. 
+			<br/><br/>
+			
+			As in previous steps, select the project in the Project Explorer and launch the Forge menu through the shortcut (<b>Ctrl + 4</b> or <b>Cmd + 4</b>).
+			<br/><br/>
+			
+			Type <b>scaffold</b> in the command filter textbox located at the top of the menu and select the entry titled <b>Scaffold: Generate</b>. 
+			Click it or press the `Enter` key to execute the command. You'll be presented with the scaffold technology selection menu - choose 
+			the <b>AngularJS</b> scaffold and click <b>Next</b>.
+			<br/><br/>
+			
+			Because the AngularJS scaffold uses <b>CDI</b> (Contexts and Dependency Injection for Java), and it is not yet set up, Forge will
+			guide us through the fairly simple CDI set up process. Select the <b>1.0</b> version of CDI and click <b>Next</b>.
+			<br/><br/>
+			
+			Finally, you'll be presented with a dialog to select the JPA entities for which the scaffold will be created.
+			Select the <b>Member</b> entity in the list of entities (it should be the only entity in the list.) Since we have already generated REST resources, 
+			leave the checkbox for generating REST resources unchecked. Click <b>Finish</b> to execute the wizard and create the AngularJS scaffold. 
+		</description>
+        <command
+            required="false"
+            serialization="org.jboss.tools.forge.ui.runForgeCommand(org.jboss.tools.forge.ui.runForgeCommand.commandName=scaffold-generate,org.jboss.tools.forge.ui.runForgeCommand.commandValues=provider%=AngularJS)"/>
+	</item>
+	<item skip="true" title="Examine the generated scaffold (AngularJS)" dialog="true">
+		<description>
+			Let&apos;s now take a look at the AngularJS scaffold created by JBoss Forge.
+			<br /><br />
+			It creates a new AngularJS module in the <b>src/main/webapp/scripts/app.js</b> file. This module is configured to wire URL routes (like <b>/Members</b>, <b>/Members/new</b> etc.) to various AngularJS views and controllers.
+			The generated scaffold contains routes for creating and editing Members, in addition to searching for them.  
+			<br /><br />
+			The generated scaffold also creates these AngularJS views in the <b>src/main/webapp/views/Member/search.html</b> and <b>src/main/webapp/views/Member/detail.html</b> files. The first view is to search Members. While the second is used to create new Members, or edit existing ones, depending on the chosen URL route.
+			<br /><br />
+			These views are written as Angular template files, and are mostly HTML in content. The Angular models used in the app are projected through the views, using the Angular controllers.
+			What this means, is that when the models change, AngularJS updates the views with the updated model contents. 
+			<br /><br />
+			The generated scaffold contains controllers corresponding to the mappings between the URL routes and views. There are three of them - <b>src/main/webapp/scripts/controllers/newMemberController.js</b> for creating new Members, <b>src/main/webapp/scripts/controllers/editMemberController.js</b> for editing existing Members, and <b>src/main/webapp/scripts/controllers/searchMemberController.js</b> for searching existing Members.
+			All three controllers expose a Angular resource object as a model. The Angular resource maps to the REST-ful server-side JAX-RS resource, previously created by JBoss Forge.   
+			<br /><br />
+			The Angular resource is setup and configured using the Angular ngResource module, in the <b>src/main/webapp/scripts/services/MemberFactory.js</b> file.
+			<br /><br />
+			Several other supporting web pages and JavaScript files are also included.    
+		</description>
+	</item>
+	<item skip="true" title="Run and deploy the application" dialog="true">
+		<description>
+			Before you proceed to deploy the application, ensure that you have setup and configured a JBoss
+			EAP 6 server.
+			<br /><br />
+			
+			Right-click the project and select <b>Run As</b> &gt; <b>Run On Server</b> or click &quot;Click to Perform&quot; (below).
+		</description>
+		<action pluginId="org.jboss.tools.project.examples.cheatsheet"
+			class="org.jboss.tools.project.examples.cheatsheet.actions.RunOnServer"
+			param1="${currentProject}" />
+	</item>
+	<item skip="true" title="Open the application in BrowserSim" dialog="true">
+		<description>
+			Locate the &quot;Run BrowserSim&quot; button on the toolbar and click it, or click &quot;Click to Perform&quot; (below).
+			This launches BrowserSim, where you can simulate the execution of the application on a mobile browser.
+			Once you launch BrowserSim, navigate to the deployed application via the BrowserSim address bar. The application is usually accessible at this
+			following address: <b>http://localhost:8080/angularjs-ee7-sample2/</b>
+		</description>
+		<command required="false"
+			serialization="org.jboss.tools.vpe.browsersim.eclipse.commands.runBrowserSim" />
+	</item>
+	<item title="Continue exploring JBoss Forge" dialog="true">
+		<description>
+			At this point, you should now have successfully created a Java EE 6 web application using several technologies/specifications. Browse the Forge menu
+			to find more useful commands, or to learn more about JBoss Forge, find more tutorials, and explore a variety of community-supported addons for various technologies, 
+			visit <b>http://forge.jboss.org</b> 
+			<br/><br/> 
+			To see a list of available Forge commands, select the project in the Project Explorer and launch the Forge menu through the shortcut (<b>Ctrl + 4</b> or <b>Cmd + 4</b>) -
+			you will then be able to filter and scroll through the available options without ever leaving the IDE.
+			<br/><br/>
+		</description>
+		<command required="false" 
+		    serialization="org.eclipse.ui.browser.openBrowser(url=http://forge.jboss.org)"/>
+	</item>
+</cheatsheet>
