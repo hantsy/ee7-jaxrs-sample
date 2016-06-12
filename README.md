@@ -2,5 +2,5 @@
 angularjs-ee7-sample
 ====================
 
-An example appliation using AnguarJS/Bootstrap as frontend and Java EE 7/JAXRS as REST API producer
 
+Please check the [Wiki pages](https://github.com/hantsy/angularjs-ee7-sample/wiki/) for more details.
