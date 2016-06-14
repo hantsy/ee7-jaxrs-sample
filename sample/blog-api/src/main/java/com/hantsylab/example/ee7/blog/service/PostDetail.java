@@ -2,8 +2,10 @@ package com.hantsylab.example.ee7.blog.service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -11,6 +13,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;

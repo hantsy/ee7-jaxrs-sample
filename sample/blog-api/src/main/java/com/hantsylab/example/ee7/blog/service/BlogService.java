@@ -50,7 +50,7 @@ public class BlogService {
         return DTOUtils.map(saved, PostDetail.class);
     }
 
-    public void deletePost(Long id) {
+    public void deletePostById(Long id) {
         Post post = fetchPostById(id);
         posts.delete(post);
     }
@@ -58,7 +58,7 @@ public class BlogService {
     private Post fetchPostById(Long id) throws PostNotFoundException {
         Post post = posts.findById(id);
         if (post == null) {
-            throw new PostNotFoundException("post:" + id + " not found");
+            throw new PostNotFoundException("post:" + id + " was not found");
         }
         return post;
     }
