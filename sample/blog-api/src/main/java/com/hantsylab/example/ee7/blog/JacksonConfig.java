@@ -17,19 +17,19 @@ import javax.ws.rs.ext.Provider;
 @Produces(MediaType.APPLICATION_JSON)
 public class JacksonConfig implements ContextResolver<ObjectMapper> {
 
-  private static final Logger LOG = Logger.getLogger(JacksonConfig.class.getName());
+    private static final Logger LOG = Logger.getLogger(JacksonConfig.class.getName());
 
-  @Override
-  public ObjectMapper getContext(final Class<?> type) {
+    @Override
+    public ObjectMapper getContext(final Class<?> type) {
 
-    final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
 
-    LOG.info("Configured Jackson Json module:");
-    mapper.findAndRegisterModules();
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        LOG.info("Configured Jackson Json module:");
+        mapper.findAndRegisterModules();
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
-    return mapper;
-  }
+        return mapper;
+    }
 
 }
