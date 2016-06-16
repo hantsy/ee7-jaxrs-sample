@@ -2,7 +2,6 @@ package com.hantsylab.example.ee7.blog.api;
 
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
-import com.hantsylab.example.ee7.blog.JacksonConfig;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
 import com.hantsylab.example.ee7.blog.model.Post;
 import com.hantsylab.example.ee7.blog.model.Post_;
@@ -10,7 +9,7 @@ import com.hantsylab.example.ee7.blog.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.service.BlogService;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
-import com.hantsylab.example.ee7.blog.service.PostNotFoundException;
+import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -70,9 +69,8 @@ public class PostResourceTest {
                 PostRepository.class
             )
             //add service classes
-            .addClasses(
-                BlogService.class,
-                PostNotFoundException.class,
+            .addClasses(BlogService.class,
+                ResourceNotFoundException.class,
                 PostForm.class,
                 PostDetail.class
             )
@@ -80,11 +78,9 @@ public class PostResourceTest {
             .addClasses(
                 JaxrsActiviator.class,
                 PostResource.class,
-                JacksonConfig.class
-            //                    ResourceNotFoundExceptionMapper.class,
+                JacksonConfig.class,
+                ResourceNotFoundExceptionMapper.class
             //                    CustomBeanParamProvider.class,
-            //                    JacksonConfig.class,
-            //                    RequestResource.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
@@ -108,6 +104,7 @@ public class PostResourceTest {
     public void setup() throws MalformedURLException {
         client = ClientBuilder.newClient();
         client.register(JacksonConfig.class);
+        client.register(ResourceNotFoundExceptionMapper.class);
     }
 
     @After
@@ -203,4 +200,45 @@ public class PostResourceTest {
 
         responseDelete.close();
     }
+
+    @Test
+    @RunAsClient
+    public void testGetPostNotFound() throws MalformedURLException {
+
+        //get the created data
+        String location = "api/posts/1000";
+        final WebTarget targetGet = client.target(URI.create(new URL(base, location).toExternalForm()));
+        Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(responseGet.getStatus(), 404);
+    }
+
+    @Test
+    @RunAsClient
+    public void testUpdatePostNotFound() throws MalformedURLException {
+        String location = "api/posts/1000";
+
+        PostForm updatePostForm = Fixtures.newPostForm(TITLE + "updated", CONTENT + "updated");
+        final WebTarget targetPut = client.target(URI.create(new URL(base, location).toExternalForm()));
+
+        final Response responsePut = targetPut
+            .request()
+            .put(Entity.json(updatePostForm));
+
+        assertEquals(responsePut.getStatus(), 404);
+    }
+
+    @Test
+    @RunAsClient
+    public void testDeletePostNotFound() throws MalformedURLException {
+        String location = "api/posts/1000";
+
+        final WebTarget targetPut = client.target(URI.create(new URL(base, location).toExternalForm()));
+
+        final Response responsePut = targetPut
+            .request()
+            .delete();
+
+        assertEquals(responsePut.getStatus(), 404);
+    }
+    
 }

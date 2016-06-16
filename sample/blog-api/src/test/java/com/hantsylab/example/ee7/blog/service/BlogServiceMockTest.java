@@ -3,9 +3,6 @@ package com.hantsylab.example.ee7.blog.service;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.model.Post;
 import com.hantsylab.example.ee7.blog.repository.PostRepository;
-import com.hantsylab.example.ee7.blog.service.BlogService;
-import com.hantsylab.example.ee7.blog.service.PostDetail;
-import com.hantsylab.example.ee7.blog.service.PostForm;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
@@ -172,6 +169,42 @@ public class BlogServiceMockTest {
 
         verify(posts, times(1)).findById(anyLong());
         verify(posts, times(1)).delete(any(Post.class));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetPostByIdNotFound() {
+
+        given(posts.findById(1L))
+            .willThrow(ResourceNotFoundException.class);
+
+        PostDetail detail = service.findPostById(1L);
+
+        verify(posts, times(1)).findById(anyLong());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testUpdatePostNotFound() {
+
+        PostForm form = Fixtures.newPostForm(TITLE + "updated", CONTENT + "updated");
+
+        given(posts.findById(1L))
+            .willThrow(ResourceNotFoundException.class);
+
+        PostDetail detail = service.updatePost(1L, form);
+
+        verify(posts, times(1)).findById(anyLong());
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testDeletePostNotFound() {
+
+        given(posts.findById(1L))
+            .willThrow(ResourceNotFoundException.class);
+
+        service.deletePostById(1L);
+
+        verify(posts, times(1)).findById(anyLong());
     }
 
 }

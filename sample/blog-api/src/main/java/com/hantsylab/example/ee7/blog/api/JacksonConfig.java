@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog;
+package com.hantsylab.example.ee7.blog.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

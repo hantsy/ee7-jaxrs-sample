@@ -4,14 +4,14 @@ package com.hantsylab.example.ee7.blog.service;
  *
  * @author hantsy
  */
-public class PostNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
     
     private static final long serialVersionUID = 1L;
 
-    public PostNotFoundException() {
+    public ResourceNotFoundException() {
     }
 
-    public PostNotFoundException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
     

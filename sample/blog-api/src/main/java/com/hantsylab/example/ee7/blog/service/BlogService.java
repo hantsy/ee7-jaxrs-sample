@@ -55,10 +55,10 @@ public class BlogService {
         posts.delete(post);
     }
 
-    private Post fetchPostById(Long id) throws PostNotFoundException {
+    private Post fetchPostById(Long id) throws ResourceNotFoundException {
         Post post = posts.findById(id);
         if (post == null) {
-            throw new PostNotFoundException("post:" + id + " was not found");
+            throw new ResourceNotFoundException("post:" + id + " was not found");
         }
         return post;
     }
