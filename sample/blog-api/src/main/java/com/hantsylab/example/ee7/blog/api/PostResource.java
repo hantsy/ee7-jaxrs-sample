@@ -3,9 +3,11 @@ package com.hantsylab.example.ee7.blog.api;
 import com.hantsylab.example.ee7.blog.service.BlogService;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,11 +30,16 @@ import javax.ws.rs.core.UriInfo;
 @Path("posts")
 public class PostResource {
 
+    private static final Logger LOG = Logger.getLogger(PostResource.class.getName());
+
     @Inject
     private BlogService service;
 
     @Context
     UriInfo uriInfo;
+
+    @Inject
+    Validator validator;
 
     @GET()
     @Produces(value = MediaType.APPLICATION_JSON)
@@ -50,6 +57,7 @@ public class PostResource {
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response save(@Valid PostForm post) {
+        //validatePost(post);
         PostDetail saved = service.createPost(post);
         return Response.created(uriInfo.getBaseUriBuilder().path("posts/{id}").build(saved.getId())).build();
     }
@@ -57,7 +65,9 @@ public class PostResource {
     @PUT
     @Path("{id}")
     @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Long id, @Valid PostForm post) {
+    public Response update(@PathParam("id") Long id,
+        @Valid PostForm post) {
+        //validatePost(post);
         PostDetail saved = service.updatePost(id, post);
         return Response.noContent().build();
     }
@@ -68,5 +78,14 @@ public class PostResource {
         service.deletePostById(id);
         return Response.noContent().build();
     }
+
+//    private void validatePost(PostForm post) {
+//        try {
+//            validator.validate(post);
+//        } catch (ConstraintViolationException e) {
+//            LOG.log(Level.SEVERE, "exception @{0}", e.getMessage());
+//            throw new InvalidFormDataException();
+//        }
+//    }
 
 }

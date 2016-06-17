@@ -79,7 +79,9 @@ public class PostResourceTest {
                 JaxrsActiviator.class,
                 PostResource.class,
                 JacksonConfig.class,
-                ResourceNotFoundExceptionMapper.class
+                ResourceNotFoundExceptionMapper.class,
+                ValidationExceptionMapper.class,
+                ValidationError.class
             //                    CustomBeanParamProvider.class,
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
@@ -105,6 +107,7 @@ public class PostResourceTest {
         client = ClientBuilder.newClient();
         client.register(JacksonConfig.class);
         client.register(ResourceNotFoundExceptionMapper.class);
+        client.register(ValidationExceptionMapper.class);
     }
 
     @After
@@ -124,7 +127,7 @@ public class PostResourceTest {
         //get all posts
         final WebTarget targetGetAll = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
         final Response resGetAll = targetGetAll.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(resGetAll.getStatus(), 200);
+        assertEquals(200, resGetAll.getStatus());
         PostDetail[] results = resGetAll.readEntity(PostDetail[].class);
         assertTrue(results != null);
         assertTrue(results.length == 0);
@@ -137,7 +140,7 @@ public class PostResourceTest {
         PostForm newPostForm = Fixtures.newPostForm(TITLE, CONTENT);
         final WebTarget targetPost = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
         final Response resPost = targetPost.request().post(Entity.json(newPostForm));
-        assertEquals(resPost.getStatus(), 201);
+        assertEquals(201, resPost.getStatus());
         String location = resPost.getHeaderString("Location");
         LOG.log(Level.INFO, "saved post location @{0}", location);
 
@@ -146,7 +149,7 @@ public class PostResourceTest {
         //verify new created post in the findAll result list.
         final WebTarget targetGetAll2 = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
         final Response resGetAll2 = targetGetAll2.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(resGetAll2.getStatus(), 200);
+        assertEquals(200, resGetAll2.getStatus());
         PostDetail[] results2 = resGetAll2.readEntity(PostDetail[].class);
         assertTrue(results2 != null);
         assertTrue(results2.length == 1);
@@ -156,7 +159,7 @@ public class PostResourceTest {
         //get the created data
         final WebTarget targetGet = client.target(URI.create(new URL(location).toExternalForm()));
         Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(responseGet.getStatus(), 200);
+        assertEquals(200, responseGet.getStatus());
         LOG.log(Level.INFO, "get entity @{0}", responseGet);
         PostDetail result = responseGet.readEntity(PostDetail.class);
         assertNotNull(result.getId());
@@ -173,7 +176,7 @@ public class PostResourceTest {
             .request()
             .put(Entity.json(updatePostForm));
 
-        assertEquals(responsePut.getStatus(), 204);
+        assertEquals(204, responsePut.getStatus());
 
         responsePut.close();
 
@@ -181,7 +184,7 @@ public class PostResourceTest {
         final WebTarget targetVerifyUpdatedGet = client.target(URI.create(new URL(location).toExternalForm()));
         final Response responseVerifyUpdatedGet = targetVerifyUpdatedGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
 
-        assertEquals(responseVerifyUpdatedGet.getStatus(), 200);
+        assertEquals(200, responseVerifyUpdatedGet.getStatus());
         LOG.log(Level.INFO, "verifyUpdateGet entity @{0}", responseVerifyUpdatedGet);
         PostDetail verifyUpdateResult = responseVerifyUpdatedGet.readEntity(PostDetail.class);
         assertNotNull(verifyUpdateResult.getId());
@@ -196,7 +199,7 @@ public class PostResourceTest {
             .request()
             .delete();
 
-        assertEquals(responseDelete.getStatus(), 204);
+        assertEquals(204, responseDelete.getStatus());
 
         responseDelete.close();
     }
@@ -209,7 +212,7 @@ public class PostResourceTest {
         String location = "api/posts/1000";
         final WebTarget targetGet = client.target(URI.create(new URL(base, location).toExternalForm()));
         Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(responseGet.getStatus(), 404);
+        assertEquals(404, responseGet.getStatus());
     }
 
     @Test
@@ -224,7 +227,7 @@ public class PostResourceTest {
             .request()
             .put(Entity.json(updatePostForm));
 
-        assertEquals(responsePut.getStatus(), 404);
+        assertEquals(404, responsePut.getStatus());
     }
 
     @Test
@@ -238,7 +241,21 @@ public class PostResourceTest {
             .request()
             .delete();
 
-        assertEquals(responsePut.getStatus(), 404);
+        assertEquals(404, responsePut.getStatus());
     }
-    
+
+    @Test
+    @RunAsClient
+    public void testCreatePostFormIsInvalid() throws MalformedURLException {
+        //create a new post
+        PostForm newPostForm = new PostForm();
+        final WebTarget targetPost = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
+        final Response resPost = targetPost.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(newPostForm));
+
+        LOG.info("response content string @\n" + resPost.readEntity(String.class));
+        assertEquals(400, resPost.getStatus());
+
+        resPost.close();
+    }
+
 }
