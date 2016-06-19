@@ -229,13 +229,6 @@ language governing permissions and limitations under the License. -->
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${version.jackson}</version>
         </dependency>
-        
-        <!-- Swagger for Jaxrs -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-            <version>1.5.9</version>
-        </dependency>
 
         <!-- TESTS -->
         <!-- JAXRS test need the dependency:resteasy-client -->
@@ -526,6 +519,51 @@ language governing permissions and limitations under the License. -->
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        
+        <profile>
+            <id>swagger</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <!-- this is relative to the pom.xml directory -->
+                                    <directory>${project.build.directory}/jaxrs-analyzer</directory>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.sebastian-daschner</groupId>
+                        <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+                        <version>0.9</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>analyze-jaxrs</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Available backends are plaintext (default), swagger and asciidoc -->
+                                    <backend>swagger</backend>
+                                    <!-- Domain of the deployed project, defaults to example.com -->
+                                    <deployedDomain>localhost</deployedDomain>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>swagger-ui</artifactId>
+                    <version>2.1.2</version>
+                </dependency>
+            </dependencies>
         </profile>
 
     </profiles>
