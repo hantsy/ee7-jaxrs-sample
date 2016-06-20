@@ -565,6 +565,36 @@ language governing permissions and limitations under the License. -->
                 </dependency>
             </dependencies>
         </profile>
+<!--        <profile>
+            <id>raml</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        
+                        <groupId>org.raml.plugins</groupId>
+                        <artifactId>jaxrs-raml-maven-plugin</artifactId>
+                        <version>1.3.4</version>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+                            <outputFile>${basedir}/target/generated-sources/jaxrs-raml/api.raml</outputFile>
+                            <basePackageName>com.hantsylab.example.ee7.blog</basePackageName>
+                            <jaxrsVersion>2.0</jaxrsVersion>
+                            <useJsr303Annotations>true</useJsr303Annotations>
+                            <jsonMapper>jackson2</jsonMapper>
+                            <removeOldOutput>true</removeOldOutput>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate-raml</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>-->
 
     </profiles>
 </project>
