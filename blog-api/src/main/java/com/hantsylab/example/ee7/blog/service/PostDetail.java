@@ -1,7 +1,7 @@
 package com.hantsylab.example.ee7.blog.service;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +25,8 @@ public class PostDetail implements Serializable {
     
     private String content;
     
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
 }

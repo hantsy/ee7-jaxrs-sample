@@ -1,7 +1,7 @@
 package com.hantsylab.example.ee7.blog.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,9 +49,9 @@ public class Post implements Serializable {
 	private String content;
 	
 	@Column(name="created_at")
-	private LocalDateTime createdAt;
+	private OffsetDateTime createdAt;
 	
 	@Column(name="updated_at")
-	private LocalDateTime updatedAt;
+	private OffsetDateTime updatedAt;
 
 }
