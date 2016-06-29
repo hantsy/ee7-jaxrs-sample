@@ -2,6 +2,7 @@ package com.hantsylab.example.ee7.blog.model;
 
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Setter
 @Getter
+@EntityListeners(AuditEntityListener.class)
 public class AbstractAuditableEntity extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
