@@ -1,8 +1,8 @@
 package com.hantsylab.example.ee7.blog.service;
 
 import com.hantsylab.example.ee7.blog.Fixtures;
-import com.hantsylab.example.ee7.blog.model.Post;
-import com.hantsylab.example.ee7.blog.repository.PostRepository;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
+import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;

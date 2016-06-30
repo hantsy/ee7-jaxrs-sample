@@ -1,8 +1,9 @@
-package com.hantsylab.example.ee7.blog.repository;
+package com.hantsylab.example.ee7.blog.domain.repository;
 
-import com.hantsylab.example.ee7.blog.model.Comment;
-import com.hantsylab.example.ee7.blog.model.Comment_;
-import com.hantsylab.example.ee7.blog.model.Post;
+import com.hantsylab.example.ee7.blog.domain.support.AbstractRepository;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
+import com.hantsylab.example.ee7.blog.domain.model.Comment_;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;

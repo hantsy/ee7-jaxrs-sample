@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog.repository;
+package com.hantsylab.example.ee7.blog.domain.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.hantsylab.example.ee7.blog.model.Post;
-import com.hantsylab.example.ee7.blog.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
+import com.hantsylab.example.ee7.blog.domain.model.Post_;
 
 @Stateless
 public class PostRepository {

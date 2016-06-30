@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.repository;
 
+import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -21,8 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.hantsylab.example.ee7.blog.Fixtures;
-import com.hantsylab.example.ee7.blog.model.Post;
-import com.hantsylab.example.ee7.blog.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
+import com.hantsylab.example.ee7.blog.domain.model.Post_;
 
 @RunWith(Arquillian.class)
 public class PostRepositoryTest {

@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.model;
 
+import com.hantsylab.example.ee7.blog.domain.convert.OffsetDateTimeConverter;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.logging.Logger;

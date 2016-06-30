@@ -1,6 +1,6 @@
-package com.hantsylab.example.ee7.blog.repository;
+package com.hantsylab.example.ee7.blog.domain.support;
 
-import com.hantsylab.example.ee7.blog.model.AbstractEntity;
+import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;

@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.model;
 
+import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.logging.Logger;

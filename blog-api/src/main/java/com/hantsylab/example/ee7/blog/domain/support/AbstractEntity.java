@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog.model;
+package com.hantsylab.example.ee7.blog.domain.support;
 
 import java.io.Serializable;
 import javax.persistence.Column;

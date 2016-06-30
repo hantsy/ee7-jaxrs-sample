@@ -29,10 +29,10 @@ import javax.ws.rs.core.UriInfo;
  * @author hantsy
  */
 @RequestScoped
-@Path("posts")
-public class PostResource {
+@Path("comments")
+public class CommentResource {
 
-    private static final Logger LOG = Logger.getLogger(PostResource.class.getName());
+    private static final Logger LOG = Logger.getLogger(CommentResource.class.getName());
 
     @Inject
     private BlogService service;
@@ -40,57 +40,27 @@ public class PostResource {
     @Context
     UriInfo uriInfo;
 
-    @GET()
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response findAll(@QueryParam("q") String keyworkd) {
-        return Response.ok(service.findByKeyword(keyworkd)).build();
-    }
-
     @GET
     @Path("{id}")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response get(@PathParam("id") Long id) {
-        return Response.ok(service.findPostById(id)).build();
-    }
-
-    @POST
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response save(@Valid PostForm post) {
-        PostDetail saved = service.createPost(post);
-        return Response.created(uriInfo.getBaseUriBuilder().path("posts/{id}").build(saved.getId())).build();
+        return Response.ok(service.findCommentById(id)).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") Long id,
-        @Valid PostForm post) {
-        PostDetail saved = service.updatePost(id, post);
+        @Valid CommentForm form) {
+        CommentDetail saved = service.updateComment(id, form);
         return Response.noContent().build();
     }
 
     @DELETE
     @Path("{id}")
     public Response delete(@PathParam("id") Long id) {
-        service.deletePostById(id);
+        service.deleteCommentById(id);
         return Response.noContent().build();
-    }
-
-    //comments of post
-    @GET
-    @Path("{id}/comments")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getCommentsOfPost(Long postId) {
-        List<CommentDetail> detailList = service.getCommentsOfPost(postId);
-        return Response.ok(detailList).build();
-    }
-
-    @POST
-    @Path("{id}/comments")
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response createCommentsOfPost(Long postId, @Valid CommentForm form) {
-        CommentDetail saved = service.createCommentOfPost(postId, form);
-        return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId())).build();
     }
 
 }

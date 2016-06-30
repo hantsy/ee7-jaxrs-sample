@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.model;
 
+import com.hantsylab.example.ee7.blog.domain.model.Post;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 

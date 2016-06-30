@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog.model;
+package com.hantsylab.example.ee7.blog.domain.convert;
 
 import java.sql.Date;
 import java.time.LocalDate;

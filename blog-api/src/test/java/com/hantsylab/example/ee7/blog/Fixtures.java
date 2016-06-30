@@ -1,6 +1,6 @@
 package com.hantsylab.example.ee7.blog;
 
-import com.hantsylab.example.ee7.blog.model.Post;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.service.PostForm;
 
 public class Fixtures {
