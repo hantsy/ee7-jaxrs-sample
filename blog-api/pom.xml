@@ -229,6 +229,12 @@ language governing permissions and limitations under the License. -->
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${version.jackson}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.6.0</version>
+        </dependency>
 
         <!-- TESTS -->
         <!-- JAXRS test need the dependency:resteasy-client -->
