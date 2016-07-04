@@ -7,10 +7,13 @@ package com.hantsylab.example.ee7.blog.domain.model;
 
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import com.hantsylab.example.ee7.blog.security.Role;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -53,9 +56,14 @@ public class User extends AbstractEntity {
 
     @Column(name = "is_active")
     private boolean active = false;
-    
-    @Column(name="role")
-    @Enumerated(EnumType.STRING)
-    private Role  role;
+
+    @ElementCollection
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = {
+            @JoinColumn(name = "user_id")
+        }
+    )
+    private List<Role> roles = new ArrayList<>();
 
 }
