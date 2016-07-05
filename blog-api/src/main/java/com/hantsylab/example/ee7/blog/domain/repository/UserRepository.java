@@ -1,7 +1,5 @@
 package com.hantsylab.example.ee7.blog.domain.repository;
 
-import com.hantsylab.example.ee7.blog.domain.model.Post;
-import com.hantsylab.example.ee7.blog.domain.model.Post_;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractRepository;

@@ -6,13 +6,8 @@
 package com.hantsylab.example.ee7.blog.domain.model;
 
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -56,13 +51,16 @@ public class User extends AbstractEntity {
     @Column(name = "is_active")
     private boolean active = false;
 
-    @ElementCollection
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = {
-            @JoinColumn(name = "user_id")
-        }
-    )
-    private List<Role> roles = new ArrayList<>();
+//    @ElementCollection
+//    @JoinTable(
+//        name = "users_roles",
+//        joinColumns = {
+//            @JoinColumn(name = "user_id")
+//        }
+//    )
+//    private List<Role> roles = new ArrayList<>();
+    
+    @Column(name="role_name")
+    private String role;
 
 }

@@ -36,6 +36,6 @@ public class UserDetail implements Serializable {
 
     private boolean active;
 
-    private List<Role> roles = new ArrayList<>();
+    private String role;
 
 }

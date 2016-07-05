@@ -347,7 +347,7 @@ public class BlogServiceMockTest {
         c2.setId(1L);
         c2.setPost(post);
 
-        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+        given(comments.findById(1L)).willReturn(null);
 
         CommentDetail commentDetail = service.updateComment(1L, cf1);
 
@@ -368,7 +368,7 @@ public class BlogServiceMockTest {
         c2.setId(1L);
         c2.setPost(post);
 
-        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+        given(comments.findById(1L)).willReturn(null);
 
         service.deleteCommentById(1L);
 
@@ -386,7 +386,7 @@ public class BlogServiceMockTest {
         c1.setId(1L);
         c1.setPost(post);
 
-        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+        given(comments.findById(1L)).willReturn(null);
 
         CommentDetail commentDetail = service.findCommentById(1L);
 
