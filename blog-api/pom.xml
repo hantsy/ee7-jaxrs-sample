@@ -56,12 +56,14 @@ language governing permissions and limitations under the License. -->
 
         <!-- other plugin versions -->
         <version.compiler.plugin>3.5.1</version.compiler.plugin>
-        <version.surefire.plugin>2.16</version.surefire.plugin>
+        <version.surefire.plugin>2.19.1</version.surefire.plugin>
         <version.war.plugin>2.5</version.war.plugin>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <junit.includes>**/arqtest/*Test.java</junit.includes>
+        <junit.excludes></junit.excludes>
     </properties>
 
 
@@ -309,6 +311,18 @@ language governing permissions and limitations under the License. -->
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.surefire.plugin}</version>
+                <configuration>
+                    <includes>
+                        <include>${junit.includes}</include>              
+                    </includes>
+                    <excludes>
+                        <exclude>${junit.excludes}</exclude>          
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
@@ -348,17 +362,10 @@ language governing permissions and limitations under the License. -->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${version.surefire.plugin}</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <junit.includes>**/*Test*</junit.includes>
+                <junit.excludes>**/arqtest/*</junit.excludes>
+            </properties>
         </profile>
 
         <profile>

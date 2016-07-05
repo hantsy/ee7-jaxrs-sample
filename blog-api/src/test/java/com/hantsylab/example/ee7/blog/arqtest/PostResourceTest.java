@@ -1,12 +1,25 @@
-package com.hantsylab.example.ee7.blog.api;
+package com.hantsylab.example.ee7.blog.arqtest;
 
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
+import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
+import com.hantsylab.example.ee7.blog.api.JacksonConfig;
+import com.hantsylab.example.ee7.blog.api.PostResource;
+import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
+import com.hantsylab.example.ee7.blog.api.ValidationError;
+import com.hantsylab.example.ee7.blog.api.ValidationExceptionMapper;
+import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
+import com.hantsylab.example.ee7.blog.domain.model.Comment_;
 import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
+import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import com.hantsylab.example.ee7.blog.service.BlogService;
+import com.hantsylab.example.ee7.blog.service.CommentDetail;
+import com.hantsylab.example.ee7.blog.service.CommentForm;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
@@ -63,16 +76,25 @@ public class PostResourceTest {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
             .addAsLibraries(extraJars)
             .addClasses(DTOUtils.class, Fixtures.class)
+            //domain.support package.
+            .addPackage(AbstractEntity.class.getPackage())
+            //domain.convert package.
+            .addPackage(LocalDateConverter.class.getPackage())
             .addClasses(
                 Post.class,
                 Post_.class,
-                PostRepository.class
+                PostRepository.class,
+                Comment.class,
+                Comment_.class,
+                CommentRepository.class
             )
             //add service classes
             .addClasses(BlogService.class,
                 ResourceNotFoundException.class,
                 PostForm.class,
-                PostDetail.class
+                PostDetail.class,
+                CommentForm.class, 
+                CommentDetail.class
             )
             //Add JAXRS resources classes
             .addClasses(
@@ -81,8 +103,8 @@ public class PostResourceTest {
                 JacksonConfig.class,
                 ResourceNotFoundExceptionMapper.class,
                 ValidationExceptionMapper.class,
-                ValidationError.class
-            //                    CustomBeanParamProvider.class,
+                ValidationError.class,
+                CustomBeanParamProvider.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.

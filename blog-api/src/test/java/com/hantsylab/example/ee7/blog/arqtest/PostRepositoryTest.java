@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog.repository;
+package com.hantsylab.example.ee7.blog.arqtest;
 
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import static org.junit.Assert.assertEquals;

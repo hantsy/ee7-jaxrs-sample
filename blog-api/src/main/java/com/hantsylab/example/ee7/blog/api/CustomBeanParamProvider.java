@@ -33,12 +33,12 @@ public class CustomBeanParamProvider implements ParamConverterProvider {
 
         @Override
         public LocalDate fromString(String value) {
-            return value == null ? null : LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
+            return value == null ? null : LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
         }
 
         @Override
         public String toString(LocalDate value) {
-            return value == null ? null : value.format(DateTimeFormatter.ISO_DATE);
+            return value == null ? null : value.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
 
