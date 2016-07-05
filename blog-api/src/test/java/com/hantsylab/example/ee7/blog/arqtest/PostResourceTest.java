@@ -340,4 +340,44 @@ public class PostResourceTest {
         resPost.close();
     }
 
+    @Test
+    @RunAsClient
+    public void testGetCommentNotFound() throws MalformedURLException {
+
+        //get the created data
+        String location = "api/comments/1000";
+        final WebTarget targetGet = client.target(URI.create(new URL(base, location).toExternalForm()));
+        Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(404, responseGet.getStatus());
+    }
+
+    @Test
+    @RunAsClient
+    public void testUpdateCommentNotFound() throws MalformedURLException {
+        String location = "api/comments/1000";
+
+        CommentForm updateCommentForm = Fixtures.newCommentForm(CONTENT + "updated");
+        final WebTarget targetPut = client.target(URI.create(new URL(base, location).toExternalForm()));
+
+        final Response responsePut = targetPut
+            .request()
+            .put(Entity.json(updateCommentForm));
+
+        assertEquals(404, responsePut.getStatus());
+    }
+
+    @Test
+    @RunAsClient
+    public void testDeleteCommentNotFound() throws MalformedURLException {
+        String location = "api/comments/1000";
+
+        final WebTarget targetPut = client.target(URI.create(new URL(base, location).toExternalForm()));
+
+        final Response responsePut = targetPut
+            .request()
+            .delete();
+
+        assertEquals(404, responsePut.getStatus());
+    }
+
 }
