@@ -1,13 +1,16 @@
 package com.hantsylab.example.ee7.blog.service;
 
 import com.hantsylab.example.ee7.blog.Fixtures;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
 import com.hantsylab.example.ee7.blog.domain.model.Post;
+import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -31,6 +34,9 @@ public class BlogServiceMockTest {
 
     @Mock
     private PostRepository posts;
+
+    @Mock
+    private CommentRepository comments;
 
     @InjectMocks
     private BlogService service;
@@ -205,6 +211,186 @@ public class BlogServiceMockTest {
         service.deletePostById(1L);
 
         verify(posts, times(1)).findById(anyLong());
+    }
+
+    @Test
+    public void testGetAllCommentsOfPost() {
+
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(2L);
+        c2.setPost(post);
+
+        given(posts.findById(1L)).willReturn(post);
+        given(comments.findByPost(post))
+            .willReturn(Arrays.asList(c1, c2));
+
+        List<CommentDetail> commentlList = service.getCommentsOfPost(1L);
+
+        assertEquals(2, commentlList.size());
+        verify(posts, times(1)).findById(anyLong());
+        verify(comments, times(1)).findByPost(any(Post.class));
+    }
+
+    @Test
+    public void testGetCommentById() {
+
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        given(comments.findById(1L)).willReturn(c1);
+
+        CommentDetail commentDetail = service.findCommentById(1L);
+
+        assertEquals(CONTENT, commentDetail.getContent());
+        assertTrue(1L == commentDetail.getId());
+        verify(comments, times(1)).findById(anyLong());
+    }
+
+    @Test
+    public void testCreateCommentsOfPost() {
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        CommentForm cf1 = Fixtures.newCommentForm(CONTENT);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(1L);
+        c2.setPost(post);
+
+        given(posts.findById(1L)).willReturn(post);
+        given(comments.save(c1))
+            .willReturn(c2);
+
+        CommentDetail commentDetail = service.createCommentOfPost(1L, cf1);
+
+        assertEquals(CONTENT, commentDetail.getContent());
+        assertTrue(1L == commentDetail.getId());
+        verify(posts, times(1)).findById(anyLong());
+        verify(comments, times(1)).save(any(Comment.class));
+    }
+
+    @Test
+    public void testUpdateComment() {
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        CommentForm cf1 = Fixtures.newCommentForm(CONTENT);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(1L);
+        c2.setPost(post);
+
+        given(comments.findById(1L)).willReturn(c1);
+        given(comments.save(c1))
+            .willReturn(c2);
+
+        CommentDetail commentDetail = service.updateComment(1L, cf1);
+
+        assertEquals(CONTENT, commentDetail.getContent());
+        assertTrue(1L == commentDetail.getId());
+        verify(comments, times(1)).findById(anyLong());
+        verify(comments, times(1)).save(any(Comment.class));
+    }
+
+    @Test
+    public void testDeleteComment() {
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(1L);
+        c2.setPost(post);
+
+        given(comments.findById(1L)).willReturn(c1);
+        doNothing().when(comments).delete(c1);
+
+        service.deleteCommentById(1L);
+
+        verify(comments, times(1)).findById(anyLong());
+        verify(comments, times(1)).delete(any(Comment.class));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testUpdateCommentNotFound() {
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        CommentForm cf1 = Fixtures.newCommentForm(CONTENT);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(1L);
+        c2.setPost(post);
+
+        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+
+        CommentDetail commentDetail = service.updateComment(1L, cf1);
+
+        verify(comments, times(1)).findById(anyLong());
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testDeleteCommentNotFound() {
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        Comment c2 = Fixtures.newComment(CONTENT);
+        c2.setId(1L);
+        c2.setPost(post);
+
+        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+
+        service.deleteCommentById(1L);
+
+        verify(comments, times(1)).findById(anyLong());
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetCommentByIdNotFound() {
+
+        Post post = Fixtures.newPost(TITLE, CONTENT);
+        post.setId(1L);
+
+        Comment c1 = Fixtures.newComment(CONTENT);
+        c1.setId(1L);
+        c1.setPost(post);
+
+        given(comments.findById(1L)).willThrow(new ResourceNotFoundException());
+
+        CommentDetail commentDetail = service.findCommentById(1L);
+
+        verify(comments, times(1)).findById(anyLong());
     }
 
 }

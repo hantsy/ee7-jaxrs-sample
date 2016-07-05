@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class JwtHelper {
 
-    private String secret = "test123";
+    private final String secret = "test123";
 
-    private long expirationInSeconds = 1000;
+    private final long expirationInSeconds = 3600;
 
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + this.expirationInSeconds * 1000);
