@@ -16,9 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.support.AbstractRepository;
 
 @Stateless
-public class PostRepository {
+public class PostRepository extends AbstractRepository<Post, Long> {
 
     @PersistenceContext
     private EntityManager em;
@@ -47,23 +48,9 @@ public class PostRepository {
         return query.getResultList();
     }
 
-    public Post save(Post entity) {
-        if (entity.getId() == null) {
-            em.persist(entity);
-
-            return entity;
-        } else {
-            return em.merge(entity);
-        }
-    }
-
-    public Post findById(Long id) {
-        return em.find(Post.class, id);
-    }
-
-    public void delete(Post entity) {
-        Post _post = em.merge(entity);
-        em.remove(_post);
+    @Override
+    protected EntityManager entityManager() {
+        return this.em;
     }
 
 }

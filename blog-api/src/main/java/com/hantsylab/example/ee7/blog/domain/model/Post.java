@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.domain.model;
 
+import com.hantsylab.example.ee7.blog.domain.support.AbstractAuditableEntity;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
@@ -24,34 +25,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post implements Serializable {
+public class Post extends AbstractAuditableEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
-	private Long id;
-	
-	@Version
-	@Column(name="version")
-	private Long version;
-	
-	@Column(name="title")
-	@NotBlank
-	private String title;
-	
-	@Column(name="content")
-	@NotBlank
-	private String content;
-	
-	@Column(name="created_at")
-	private OffsetDateTime createdAt;
-	
-	@Column(name="updated_at")
-	private OffsetDateTime updatedAt;
+    @Column(name = "title")
+    @NotBlank
+    private String title;
+
+    @Column(name = "content")
+    @NotBlank
+    private String content;
 
 }

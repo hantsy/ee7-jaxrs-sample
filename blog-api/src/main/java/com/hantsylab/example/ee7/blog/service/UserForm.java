@@ -1,6 +1,6 @@
 package com.hantsylab.example.ee7.blog.service;
 
-import com.hantsylab.example.ee7.blog.security.Role;
+import com.hantsylab.example.ee7.blog.domain.model.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

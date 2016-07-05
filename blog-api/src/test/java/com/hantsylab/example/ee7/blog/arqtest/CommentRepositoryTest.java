@@ -1,6 +1,6 @@
 package com.hantsylab.example.ee7.blog.arqtest;
 
-import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
+import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -23,12 +23,15 @@ import org.junit.runner.RunWith;
 
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
+import com.hantsylab.example.ee7.blog.domain.model.Comment_;
 import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 
 @RunWith(Arquillian.class)
-public class PostRepositoryTest {
+public class CommentRepositoryTest {
 
     @Deployment(name = "test")
     public static Archive<?> createDeployment() {
@@ -37,8 +40,8 @@ public class PostRepositoryTest {
             .addPackage(AbstractEntity.class.getPackage())
             //domain.convert package.
             .addPackage(LocalDateConverter.class.getPackage())
-            .addClasses(Post.class, Post_.class)
-            .addClasses(PostRepository.class)
+            .addClasses(Post.class, Post_.class, Comment.class, Comment_.class)
+            .addClasses(PostRepository.class, CommentRepository.class)
             .addClasses(Fixtures.class, StringUtils.class)
             .addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -47,41 +50,47 @@ public class PostRepositoryTest {
     }
 
     @Inject
+    CommentRepository comments;
+
+    @Inject
     PostRepository posts;
 
-    private static final String TITLE = "test_title";
     private static final String CONTENT = "test_content";
 
-    Post _saved;
+    Comment _saved;
+    Post _post;
 
     @Before
     public void setUp() throws Exception {
-        Post post = Fixtures.newPost(TITLE, CONTENT);
-        _saved = posts.save(post);
+        Comment comment = Fixtures.newComment(CONTENT);
+        Post post = Fixtures.newPost("test title", "test content");
+        _post = posts.save(post);
+        comment.setPost(_post);
+        _saved = comments.save(comment);
     }
 
     @After
     public void tearDown() throws Exception {
-        posts.delete(_saved);
+        comments.delete(_saved);
+        posts.delete(_post);
     }
 
     @Test
-    public void testFindByKeyword() {
-        List<Post> foundPosts = posts.findByKeyword("test");
-        assertEquals(1, foundPosts.size());
+    public void testFindAll() {
+        List<Comment> foundComments = comments.findAll();
+        assertEquals(1, foundComments.size());
     }
 
     @Test
-    public void testFindByKeywordNotFound() {
-        List<Post> foundPosts = posts.findByKeyword("test123");
-        assertEquals(0, foundPosts.size());
+    public void testFindByPost() {
+        List<Comment> foundComments = comments.findByPost(_post);
+        assertEquals(1, foundComments.size());
     }
 
     @Test
     public void testFindById() {
-        Post found = posts.findById(_saved.getId());
+        Comment found = comments.findById(_saved.getId());
         assertNotNull(found);
-        assertEquals(TITLE, found.getTitle());
         assertEquals(CONTENT, found.getContent());
         assertNotNull(found.getId());
         assertNotNull(found.getVersion());
@@ -89,32 +98,28 @@ public class PostRepositoryTest {
 
     @Test
     public void testCRUD() {
-        Post post = Fixtures.newPost(TITLE + "1", CONTENT + "1");
-        Post saved = posts.save(post);
+        Comment comment = Fixtures.newComment(CONTENT + "1");
+        Comment saved = comments.save(comment);
 
-        assertEquals(TITLE + "1", saved.getTitle());
         assertEquals(CONTENT + "1", saved.getContent());
         assertNotNull(saved.getId());
         assertNotNull(saved.getVersion());
 
-        saved.setTitle(TITLE + "updated");
         saved.setContent(CONTENT + "updated");
 
-        Post updated = posts.save(saved);
+        Comment updated = comments.save(saved);
 
-        assertEquals(TITLE + "updated", updated.getTitle());
         assertEquals(CONTENT + "updated", updated.getContent());
 
         Long id = updated.getId();
         assertNotNull(id);
 
-        Post found = posts.findById(id);
-        assertEquals(TITLE + "updated", found.getTitle());
+        Comment found = comments.findById(id);
         assertEquals(CONTENT + "updated", found.getContent());
 
-        posts.delete(found);
+        comments.delete(found);
 
-        assertNull(posts.findById(id));
+        assertNull(comments.findById(id));
     }
 
 }

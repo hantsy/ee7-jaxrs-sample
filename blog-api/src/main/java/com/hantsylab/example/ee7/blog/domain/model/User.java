@@ -6,7 +6,6 @@
 package com.hantsylab.example.ee7.blog.domain.model;
 
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
-import com.hantsylab.example.ee7.blog.security.Role;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
