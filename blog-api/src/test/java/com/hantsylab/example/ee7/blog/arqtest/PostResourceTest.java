@@ -3,6 +3,7 @@ package com.hantsylab.example.ee7.blog.arqtest;
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
+import com.hantsylab.example.ee7.blog.api.CommentResource;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
 import com.hantsylab.example.ee7.blog.api.PostResource;
@@ -93,13 +94,14 @@ public class PostResourceTest {
                 ResourceNotFoundException.class,
                 PostForm.class,
                 PostDetail.class,
-                CommentForm.class, 
+                CommentForm.class,
                 CommentDetail.class
             )
             //Add JAXRS resources classes
             .addClasses(
                 JaxrsActiviator.class,
                 PostResource.class,
+                CommentResource.class,
                 JacksonConfig.class,
                 ResourceNotFoundExceptionMapper.class,
                 ValidationExceptionMapper.class,
@@ -163,8 +165,8 @@ public class PostResourceTest {
         final WebTarget targetPost = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
         final Response resPost = targetPost.request().post(Entity.json(newPostForm));
         assertEquals(201, resPost.getStatus());
-        String location = resPost.getHeaderString("Location");
-        LOG.log(Level.INFO, "saved post location @{0}", location);
+        String savedPostLocaiton = resPost.getHeaderString("Location");
+        LOG.log(Level.INFO, "saved post location @{0}", savedPostLocaiton);
 
         resPost.close();
 
@@ -179,7 +181,7 @@ public class PostResourceTest {
         resGetAll2.close();
 
         //get the created data
-        final WebTarget targetGet = client.target(URI.create(new URL(location).toExternalForm()));
+        final WebTarget targetGet = client.target(URI.create(new URL(savedPostLocaiton).toExternalForm()));
         Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, responseGet.getStatus());
         LOG.log(Level.INFO, "get entity @{0}", responseGet);
@@ -190,9 +192,67 @@ public class PostResourceTest {
 
         responseGet.close();
 
+        //get comments of post:initial
+        LOG.log(Level.INFO, "get comment location@{0}/comments", savedPostLocaiton);
+        final WebTarget targetCommentsGet = client.target(URI.create(new URL(savedPostLocaiton + "/comments").toExternalForm()));
+        Response responseCommentsGet = targetCommentsGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(200, responseCommentsGet.getStatus());
+        LOG.log(Level.INFO, "get entity @{0}", responseCommentsGet);
+        CommentDetail[] resultComments = responseCommentsGet.readEntity(CommentDetail[].class);
+        assertEquals(0, resultComments.length);
+        responseCommentsGet.close();
+
+        //create comments of post
+        CommentForm newCommentForm = Fixtures.newCommentForm(CONTENT);
+        final WebTarget targetCommentPost = client.target(URI.create(new URL(savedPostLocaiton + "/comments").toExternalForm()));
+        final Response responseCommentPost = targetCommentPost.request().post(Entity.json(newCommentForm));
+        assertEquals(201, responseCommentPost.getStatus());
+        String savedCommentLocaiton = responseCommentPost.getHeaderString("Location");
+        LOG.log(Level.INFO, "saved comment location @{0}", savedCommentLocaiton);
+        responseCommentPost.close();
+
+        //get comments of post:verified
+        final WebTarget targetVerifiedCommentsGet = client.target(URI.create(new URL(savedPostLocaiton + "/comments").toExternalForm()));
+        Response responseVerifiedCommentsGet = targetVerifiedCommentsGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(200, responseVerifiedCommentsGet.getStatus());
+        LOG.log(Level.INFO, "get entity @{0}", responseVerifiedCommentsGet);
+        CommentDetail[] resultVerifiedComments = responseVerifiedCommentsGet.readEntity(CommentDetail[].class);
+        assertEquals(1, resultVerifiedComments.length);
+        responseVerifiedCommentsGet.close();
+
+        //get comment by id:
+        final WebTarget targetCommentGet = client.target(URI.create(new URL(savedCommentLocaiton).toExternalForm()));
+        Response responseCommentGet = targetCommentGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(200, responseCommentGet.getStatus());
+        LOG.log(Level.INFO, "get entity @{0}", responseCommentGet);
+        CommentDetail resultComment = responseCommentGet.readEntity(CommentDetail.class);
+        assertNotNull(resultComment.getId());
+        assertEquals(CONTENT, resultComment.getContent());
+        responseCommentGet.close();
+
+        //update comment
+        CommentForm updateCommentForm = Fixtures.newCommentForm(CONTENT + "updated");
+        final WebTarget targetCommentPut = client.target(URI.create(new URL(savedCommentLocaiton).toExternalForm()));
+
+        final Response responseCommentPut = targetCommentPut
+            .request()
+            .put(Entity.json(updateCommentForm));
+
+        assertEquals(204, responseCommentPut.getStatus());
+        responseCommentPut.close();
+
+        //delete comment
+        final WebTarget targetCommentDelete = client.target(URI.create(new URL(savedCommentLocaiton).toExternalForm()));
+        final Response responseCommentDelete = targetCommentDelete
+            .request()
+            .delete();
+
+        assertEquals(204, responseCommentDelete.getStatus());
+        responseCommentDelete.close();
+
         //update post form
         PostForm updatePostForm = Fixtures.newPostForm(TITLE + "updated", CONTENT + "updated");
-        final WebTarget targetPut = client.target(URI.create(new URL(location).toExternalForm()));
+        final WebTarget targetPut = client.target(URI.create(new URL(savedPostLocaiton).toExternalForm()));
 
         final Response responsePut = targetPut
             .request()
@@ -203,7 +263,7 @@ public class PostResourceTest {
         responsePut.close();
 
         //verify updated result
-        final WebTarget targetVerifyUpdatedGet = client.target(URI.create(new URL(location).toExternalForm()));
+        final WebTarget targetVerifyUpdatedGet = client.target(URI.create(new URL(savedPostLocaiton).toExternalForm()));
         final Response responseVerifyUpdatedGet = targetVerifyUpdatedGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
 
         assertEquals(200, responseVerifyUpdatedGet.getStatus());
@@ -216,7 +276,7 @@ public class PostResourceTest {
         responseVerifyUpdatedGet.close();
 
         //delete post
-        final WebTarget targetDelete = client.target(URI.create(new URL(location).toExternalForm()));
+        final WebTarget targetDelete = client.target(URI.create(new URL(savedPostLocaiton).toExternalForm()));
         final Response responseDelete = targetDelete
             .request()
             .delete();

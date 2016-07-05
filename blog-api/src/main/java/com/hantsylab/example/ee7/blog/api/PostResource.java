@@ -80,7 +80,7 @@ public class PostResource {
     @GET
     @Path("{id}/comments")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getCommentsOfPost(Long postId) {
+    public Response getCommentsOfPost(@PathParam("id") Long postId) {
         List<CommentDetail> detailList = service.getCommentsOfPost(postId);
         return Response.ok(detailList).build();
     }
@@ -88,7 +88,7 @@ public class PostResource {
     @POST
     @Path("{id}/comments")
     @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response createCommentsOfPost(Long postId, @Valid CommentForm form) {
+    public Response createCommentsOfPost(@PathParam("id") Long postId, @Valid CommentForm form) {
         CommentDetail saved = service.createCommentOfPost(postId, form);
         return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId())).build();
     }
