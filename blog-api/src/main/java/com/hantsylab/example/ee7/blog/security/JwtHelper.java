@@ -11,11 +11,13 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.enterprise.context.ApplicationScoped;
 
 /**
  *
  * @author hantsy
  */
+@ApplicationScoped
 public class JwtHelper {
 
     private final String secret = "test123";

@@ -1,8 +1,7 @@
-package com.hantsylab.example.ee7.blog.api.users;
+package com.hantsylab.example.ee7.blog.service;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,14 +13,13 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Credentials implements Serializable {
+public class SignupForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @NotBlank
     private String username;
-    
+
     @NotBlank
     private String password;
 

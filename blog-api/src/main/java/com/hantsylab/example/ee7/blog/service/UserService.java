@@ -3,6 +3,8 @@ package com.hantsylab.example.ee7.blog.service;
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
+import com.hantsylab.example.ee7.blog.security.JwtHelper;
+import com.hantsylab.example.ee7.blog.security.PasswordEncoder;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,6 +18,12 @@ public class UserService {
 
     @Inject
     UserRepository users;
+
+    @Inject
+    PasswordEncoder encoder;
+
+    @Inject
+    JwtHelper jwtHelper;
 
     public UserDetail findUserById(Long id) {
         User user = fetchUserById(id);
@@ -41,6 +49,31 @@ public class UserService {
         List<User> userlist = users.findByKeyword(q);
 
         return DTOUtils.mapList(userlist, UserDetail.class);
+    }
+
+    public IdToken authenticate(Credentials credentials) {
+        User user = users.findByUsername(credentials.getUsername());
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
+        if (!encoder.match(credentials.getPassword(), user.getPassword())) {
+            throw new AuthenticationException();
+        }
+
+        return new IdToken(jwtHelper.generateToken(user));
+    }
+
+    public UserDetail registerUser(SignupForm form) {
+        final String username = form.getUsername();
+        if (usernameExists(username)) {
+            throw new UsernameWasTakenException("username:" + username + " was taken.");
+        }
+
+        User user = DTOUtils.map(form, User.class);
+        User saved = users.save(user);
+
+        return DTOUtils.map(saved, UserDetail.class);
     }
 
     public UserDetail createUser(UserForm form) {
