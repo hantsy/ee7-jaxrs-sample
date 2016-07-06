@@ -1,10 +1,11 @@
 package com.hantsylab.example.ee7.blog.service;
 
 import com.hantsylab.example.ee7.blog.DTOUtils;
+import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.security.JwtHelper;
-import com.hantsylab.example.ee7.blog.security.PasswordEncoder;
+import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ public class UserService {
     UserRepository users;
 
     @Inject
+    @Crypto(Crypto.Type.BCRYPT)
     PasswordEncoder encoder;
 
     @Inject
@@ -57,7 +59,7 @@ public class UserService {
             throw new AuthenticationException();
         }
 
-        if (!encoder.match(credentials.getPassword(), user.getPassword())) {
+        if (!encoder.matches(credentials.getPassword(), user.getPassword())) {
             throw new AuthenticationException();
         }
 
@@ -71,6 +73,9 @@ public class UserService {
         }
 
         User user = DTOUtils.map(form, User.class);
+        
+        // ENCODE PASSWORD
+        user.setPassword(this.encoder.encode(form.getPassword()));
         User saved = users.save(user);
 
         return DTOUtils.map(saved, UserDetail.class);
@@ -83,6 +88,9 @@ public class UserService {
         }
 
         User user = DTOUtils.map(form, User.class);
+
+        // ENCODE PASSWORD
+        user.setPassword(this.encoder.encode(form.getPassword()));
         User saved = users.save(user);
 
         return DTOUtils.map(saved, UserDetail.class);

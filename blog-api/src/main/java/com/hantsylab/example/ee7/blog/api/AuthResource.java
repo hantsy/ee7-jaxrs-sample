@@ -3,6 +3,7 @@ package com.hantsylab.example.ee7.blog.api;
 import com.hantsylab.example.ee7.blog.service.Credentials;
 import com.hantsylab.example.ee7.blog.service.SignupForm;
 import com.hantsylab.example.ee7.blog.service.UserService;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ public class AuthResource {
     @Path("login")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response login(@Valid Credentials form) {
-        LOG.info("login as@" + form);
+        LOG.log(Level.INFO, "login as@{0}", form);
         return Response.ok(service.authenticate(form)).build();
     }
 
@@ -43,6 +44,7 @@ public class AuthResource {
     @Path("signup")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response signup(@Valid SignupForm form) {
+        service.registerUser(form);
         return Response.ok().build();
     }
 
