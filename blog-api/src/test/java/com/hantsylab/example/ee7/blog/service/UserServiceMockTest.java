@@ -1,6 +1,7 @@
 package com.hantsylab.example.ee7.blog.service;
 
 import com.hantsylab.example.ee7.blog.Fixtures;
+import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
@@ -37,6 +38,9 @@ public class UserServiceMockTest {
 
     @Mock
     private CommentRepository comments;
+
+    @Mock
+    private PasswordEncoder encoder;
 
     @InjectMocks
     private UserService service;
@@ -168,6 +172,8 @@ public class UserServiceMockTest {
         given(users.save(newUser))
             .willReturn(returned);
 
+        given(encoder.encode(PASSWORD)).willReturn(PASSWORD);
+
         UserDetail detail = service.createUser(form);
 
         assertNotNull(detail.getId());
@@ -176,6 +182,7 @@ public class UserServiceMockTest {
 
         verify(users, times(1)).findByUsername(anyString());
         verify(users, times(1)).save(any(User.class));
+        verify(encoder, times(1)).encode(anyString());
     }
 
     @Test
