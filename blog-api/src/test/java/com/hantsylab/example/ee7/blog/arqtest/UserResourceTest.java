@@ -3,6 +3,7 @@ package com.hantsylab.example.ee7.blog.arqtest;
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
+import com.hantsylab.example.ee7.blog.api.AuthenticationExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
 import com.hantsylab.example.ee7.blog.api.UserResource;
@@ -10,16 +11,23 @@ import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.UsernameWasTakenExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.ValidationError;
 import com.hantsylab.example.ee7.blog.api.ValidationExceptionMapper;
+import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
+import com.hantsylab.example.ee7.blog.crypto.bcrypt.BCryptPasswordEncoder;
+import com.hantsylab.example.ee7.blog.crypto.plain.PlainPasswordEncoder;
 import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
 import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
-import com.hantsylab.example.ee7.blog.service.CommentForm;
+import com.hantsylab.example.ee7.blog.security.JwtHelper;
+import com.hantsylab.example.ee7.blog.service.AuthenticationException;
+import com.hantsylab.example.ee7.blog.service.Credentials;
+import com.hantsylab.example.ee7.blog.service.IdToken;
 import com.hantsylab.example.ee7.blog.service.UserDetail;
 import com.hantsylab.example.ee7.blog.service.UserForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
+import com.hantsylab.example.ee7.blog.service.SignupForm;
 import com.hantsylab.example.ee7.blog.service.UserService;
 import com.hantsylab.example.ee7.blog.service.UsernameWasTakenException;
 import java.io.File;
@@ -67,7 +75,8 @@ public class UserResourceTest {
                 "org.projectlombok:lombok:1.16.8",
                 "org.modelmapper:modelmapper:0.7.5",
                 "org.apache.commons:commons-lang3:3.4",
-                "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3"
+                "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3",
+                "io.jsonwebtoken:jjwt:0.6.0"
             )
             .withTransitivity()
             .asFile();
@@ -75,6 +84,11 @@ public class UserResourceTest {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
             .addAsLibraries(extraJars)
             .addClasses(DTOUtils.class, Fixtures.class)
+            .addPackage(PlainPasswordEncoder.class.getPackage())
+            .addPackage(BCryptPasswordEncoder.class.getPackage())
+            .addPackage(PasswordEncoder.class.getPackage())
+            //jwt
+            .addClasses(JwtHelper.class)
             //domain.support package.
             .addPackage(AbstractEntity.class.getPackage())
             //domain.convert package.
@@ -94,7 +108,10 @@ public class UserResourceTest {
                 ResourceNotFoundException.class,
                 UsernameWasTakenException.class,
                 UserForm.class,
-                UserDetail.class//,
+                UserDetail.class,
+                Credentials.class,
+                SignupForm.class,
+                IdToken.class
             //                CommentForm.class,
             //                CommentDetail.class
             )
@@ -107,6 +124,8 @@ public class UserResourceTest {
                 ResourceNotFoundExceptionMapper.class,
                 ValidationExceptionMapper.class,
                 UsernameWasTakenExceptionMapper.class,
+                AuthenticationException.class,
+                AuthenticationExceptionMapper.class,
                 ValidationError.class,
                 CustomBeanParamProvider.class
             )
@@ -290,7 +309,7 @@ public class UserResourceTest {
     @RunAsClient
     public void testCreateUserFormWhenUsernnameWasTaken() throws MalformedURLException {
         //create a new user
-        UserForm newUserForm = Fixtures.newUserForm(FIRST_NAME, LAST_NAME, USERNAME+"test", PASSWORD);
+        UserForm newUserForm = Fixtures.newUserForm(FIRST_NAME, LAST_NAME, USERNAME + "test", PASSWORD);
         final WebTarget targetUser = client.target(URI.create(new URL(base, "api/users").toExternalForm()));
         final Response resUser = targetUser.request().post(Entity.json(newUserForm));
         assertEquals(201, resUser.getStatus());
@@ -300,7 +319,7 @@ public class UserResourceTest {
         resUser.close();
 
         //create a new user
-        UserForm newUserForm2 =Fixtures.newUserForm(FIRST_NAME, LAST_NAME, USERNAME+"test", PASSWORD);
+        UserForm newUserForm2 = Fixtures.newUserForm(FIRST_NAME, LAST_NAME, USERNAME + "test", PASSWORD);
         final WebTarget targetUser2 = client.target(URI.create(new URL(base, "api/users").toExternalForm()));
         final Response resUser2 = targetUser2.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(newUserForm2));
 
