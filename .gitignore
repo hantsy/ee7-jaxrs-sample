@@ -6,3 +6,4 @@ target
 nb-configuration.xml
 .tern-project
 .factorypath
+/blog-api/nbproject/
