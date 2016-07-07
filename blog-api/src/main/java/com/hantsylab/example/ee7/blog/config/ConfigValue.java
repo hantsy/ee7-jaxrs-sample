@@ -12,6 +12,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
 /**
@@ -23,8 +24,10 @@ import javax.inject.Qualifier;
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 public @interface ConfigValue {
 
+    @Nonbinding
     String value() default "";
 
+    @Nonbinding
     boolean required() default false;
 
 }

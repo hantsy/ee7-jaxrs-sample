@@ -5,21 +5,19 @@
  */
 package com.hantsylab.example.ee7.blog.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.inject.Inject;
 
 @Dependent
 public class ConfigValueProducer {
 
     private static final Logger LOG = Logger.getLogger(ConfigValueProducer.class.getSimpleName());
 
-    private static final String CONFIG_FILE = "/config.properties";
+    @Inject
+    PropertiesFileLoader propsLoader;
 
     /**
      * Main producer method - tries to find a property value using following
@@ -75,15 +73,7 @@ public class ConfigValueProducer {
     }
 
     public String getValue(String key) {
-        InputStream in = this.getClass().getResourceAsStream(CONFIG_FILE);
-        Properties properties = new Properties();
-        try {
-            properties.load(in);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-        Object value = properties.get(key);
-
+        Object value = propsLoader.getValue(key);
         return (value != null) ? String.valueOf(value) : null;
     }
 
