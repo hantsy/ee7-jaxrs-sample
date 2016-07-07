@@ -21,7 +21,7 @@ public class PropertiesFileLoader {
 
     private static final String CONFIG_FILE = "/config.properties";
 
-    private Map<String, Object> props = new HashMap<>();
+    private final Map<String, Object> props = new HashMap<>();
 
     @PostConstruct
     public void init() {
