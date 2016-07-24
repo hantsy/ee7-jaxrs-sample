@@ -14,10 +14,10 @@ language governing permissions and limitations under the License. -->
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hantsylab.example.ee7</groupId>
-    <artifactId>blog-api</artifactId>
+    <artifactId>blog-api-jwt</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>WildFly Quickstarts: blog-api</name>
+    <name>Building RESTful APIs with Jaxrs(jwt)</name>
     <description>A starter Java EE 7 webapp project for use on JBoss WildFly / WildFly, generated from the jboss-javaee6-webapp archetype</description>
 
     <url>http://wildfly.org</url>
