@@ -17,7 +17,7 @@ language governing permissions and limitations under the License. -->
     <artifactId>blog-api-jwt</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Building RESTful APIs with Jaxrs(jwt)</name>
+    <name>Blog Sample APIs with Java EE 7 and Jaxrs(CDI and Apache DeltaSpike)</name>
     <description>A starter Java EE 7 webapp project for use on JBoss WildFly / WildFly, generated from the jboss-javaee6-webapp archetype</description>
 
     <url>http://wildfly.org</url>

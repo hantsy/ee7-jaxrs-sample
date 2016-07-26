@@ -4,7 +4,7 @@ import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
-import com.hantsylab.example.ee7.blog.security.JwtHelper;
+import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;

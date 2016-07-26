@@ -20,7 +20,7 @@ import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
-import com.hantsylab.example.ee7.blog.security.JwtHelper;
+import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import com.hantsylab.example.ee7.blog.service.AuthenticationException;
 import com.hantsylab.example.ee7.blog.service.Credentials;
 import com.hantsylab.example.ee7.blog.service.IdToken;

@@ -7,6 +7,7 @@ import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @RequestScoped
 @Path("posts")
+@RolesAllowed({"USER"})
 public class PostResource {
 
     private static final Logger LOG = Logger.getLogger(PostResource.class.getName());
