@@ -13,7 +13,6 @@ import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.UserResource;
 import com.hantsylab.example.ee7.blog.api.ValidationError;
 import com.hantsylab.example.ee7.blog.api.ValidationExceptionMapper;
-import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import com.hantsylab.example.ee7.blog.crypto.bcrypt.BCryptPasswordEncoder;
 import com.hantsylab.example.ee7.blog.crypto.plain.PlainPasswordEncoder;
@@ -32,6 +31,7 @@ import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.security.UserPrincipal;
 import com.hantsylab.example.ee7.blog.security.filter.AuthenticationFilter;
+import com.hantsylab.example.ee7.blog.security.filter.AuthorizationFilter;
 import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import com.hantsylab.example.ee7.blog.security.jwt.JwtUser;
 import com.hantsylab.example.ee7.blog.service.AuthenticationException;
@@ -49,23 +49,15 @@ import com.hantsylab.example.ee7.blog.service.UserForm;
 import com.hantsylab.example.ee7.blog.service.UserService;
 import com.hantsylab.example.ee7.blog.service.UsernameWasTakenException;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -81,6 +73,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -166,6 +159,7 @@ public class JwtAuthTest {
             .addPackage(PasswordEncoder.class.getPackage())
             .addClasses(
                 AuthenticationFilter.class,
+                AuthorizationFilter.class,
                 JwtHelper.class,
                 JwtUser.class,
                 UserPrincipal.class,
@@ -241,11 +235,20 @@ public class JwtAuthTest {
         final Response resGetAll = targetGetAll.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, resGetAll.getStatus());
 
+        PostDetail[] posts = resGetAll.readEntity(PostDetail[].class);
+
+        assertTrue(posts.length == 1);
+
+        Long id = posts[0].getId();
+
         //You have to close the response manually... issue# RESTEASY-1120
         //see https://issues.jboss.org/browse/RESTEASY-1120
         resGetAll.close();
+
+        //get all posts
+        final WebTarget targetDelAll = client.target(URI.create(new URL(base, "api/posts/"+id).toExternalForm()));
+        final Response resDelAll = targetDelAll.request().accept(MediaType.APPLICATION_JSON_TYPE).delete();
+        assertEquals(403, resDelAll.getStatus());
     }
-
-
 
 }

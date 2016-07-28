@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.security.jwt;
 
+import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.security.UserPrincipal;
 import io.jsonwebtoken.Claims;
@@ -43,7 +44,7 @@ public class JwtHelper {
         if (claimsIsExpired(claims)) {
             throw new RuntimeException("token is expired");
         }
-        return new JwtUser((String) claims.get("sub"), Arrays.asList((String) claims.get("role")));
+        return new JwtUser((String) claims.get("sub"), Arrays.asList(Role.valueOf((String) claims.get("role"))));
     }
 
     private boolean claimsIsExpired(Claims claims) throws Exception {

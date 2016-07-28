@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.security;
 
+import com.hantsylab.example.ee7.blog.domain.model.Role;
 import java.security.Principal;
 import java.util.List;
 
@@ -9,6 +10,6 @@ import java.util.List;
  */
 public interface UserPrincipal extends Principal {
 
-    List<String> getRoles();
+    List<Role> getRoles();
 
 }

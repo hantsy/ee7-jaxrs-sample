@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,6 +61,7 @@ public class User extends AbstractEntity {
 //    )
 //    private List<Role> roles = new ArrayList<>();
     @Column(name = "role_name")
+    @NotNull
     private Role role = Role.USER;
 
 }
