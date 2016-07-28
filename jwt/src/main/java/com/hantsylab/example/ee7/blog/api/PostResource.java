@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.api;
 
+import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.service.BlogService;
 import com.hantsylab.example.ee7.blog.service.CommentDetail;
 import com.hantsylab.example.ee7.blog.service.CommentForm;
@@ -32,6 +33,7 @@ import javax.ws.rs.core.UriInfo;
 @RequestScoped
 @Path("posts")
 @RolesAllowed({"USER"})
+@Secured
 public class PostResource {
 
     private static final Logger LOG = Logger.getLogger(PostResource.class.getName());

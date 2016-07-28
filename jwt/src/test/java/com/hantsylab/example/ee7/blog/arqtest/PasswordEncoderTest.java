@@ -1,6 +1,5 @@
 package com.hantsylab.example.ee7.blog.arqtest;
 
-
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -48,6 +47,10 @@ public class PasswordEncoderTest {
     @Test
     public void testBCryptInjectWorks() {
         assertTrue(bcrypt instanceof BCryptPasswordEncoder);
+
+        String encoded = bcrypt.encode("test123");
+        
+        assertTrue(bcrypt.matches("test123", encoded));
     }
 
 }

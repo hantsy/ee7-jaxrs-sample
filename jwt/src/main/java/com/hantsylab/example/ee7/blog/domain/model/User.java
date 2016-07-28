@@ -59,8 +59,7 @@ public class User extends AbstractEntity {
 //        }
 //    )
 //    private List<Role> roles = new ArrayList<>();
-    
-    @Column(name="role_name")
-    private String role;
+    @Column(name = "role_name")
+    private Role role = Role.USER;
 
 }

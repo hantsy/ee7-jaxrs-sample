@@ -14,7 +14,7 @@ language governing permissions and limitations under the License. -->
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hantsylab.example.ee7</groupId>
-    <artifactId>blog-api-jwt</artifactId>
+    <artifactId>blog-api-cdi</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Blog Sample APIs with Java EE 7 and Jaxrs(CDI and Apache DeltaSpike)</name>
@@ -46,6 +46,7 @@ language governing permissions and limitations under the License. -->
         <version.wildfly>10.0.0.Final</version.wildfly>
         <version.org.wildfly.arquillian>2.0.0.Final</version.org.wildfly.arquillian>
         <version.jackson>2.6.3</version.jackson>
+        <version.deltaspike>1.7.1</version.deltaspike>
 
         <!-- Apache components versions -->
         <version.httpclient>4.5</version.httpclient>
@@ -69,6 +70,15 @@ language governing permissions and limitations under the License. -->
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.deltaspike.distribution</groupId>
+                <artifactId>distributions-bom</artifactId>
+                <version>${version.deltaspike}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            
             <!-- JBoss distributes a complete set of Java EE 7 APIs including a Bill 
             of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
             of artifacts. We use this here so that we always get the correct versions 
@@ -84,7 +94,7 @@ language governing permissions and limitations under the License. -->
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
@@ -107,6 +117,43 @@ language governing permissions and limitations under the License. -->
     </dependencyManagement>
 
     <dependencies>
+        
+        <!-- Apache DeltaSpike-->
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+               
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-data-module-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-data-module-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- First declare the APIs we depend on and need for compilation. All 
         of them are provided by JBoss WildFly -->

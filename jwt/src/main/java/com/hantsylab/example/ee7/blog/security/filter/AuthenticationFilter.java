@@ -1,5 +1,6 @@
 package com.hantsylab.example.ee7.blog.security.filter;
 
+import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.security.UserPrincipal;
 import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
@@ -19,6 +21,7 @@ import javax.ws.rs.ext.Provider;
  *
  * @author hantsy
  */
+@Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
@@ -31,9 +34,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         SecurityContext originalContext = requestContext.getSecurityContext();
 
         String token = extractTokenFromHeader(requestContext);
-
         try {
-
             // Validate the token
             UserPrincipal claims = jwtHelper.parseToken(token);
             requestContext.setSecurityContext(new Authorizer(claims, originalContext.isSecure()));
@@ -43,7 +44,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
-
+    
 //@Context
 // SecurityContext securityContext;
 //    Principal principal = securityContext.getUserPrincipal();
