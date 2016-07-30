@@ -1,9 +1,11 @@
 package com.hantsylab.example.ee7.blog.security;
 
 import com.hantsylab.example.ee7.blog.domain.model.User;
+import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 /**
  *
@@ -17,13 +19,11 @@ public class AuthenticatedUserProducer {
     @AuthenticatedUser
     private User authenticatedUser;
 
+    @Inject
+    UserRepository users;
+
     public void handleAuthenticationEvent(@Observes @AuthenticatedUser String username) {
-        this.authenticatedUser = findUser(username);
+        this.authenticatedUser = users.findByUsername(username);
     }
 
-    private User findUser(String username) {
-        // Hit the the database or a service to find a user by its username and return it
-        // Return the User instance
-        return new User();
-    }
 }

@@ -1,4 +1,4 @@
-package com.hantsylab.example.ee7.blog.security;
+package com.hantsylab.example.ee7.blog.security.jwt;
 
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import io.jsonwebtoken.Claims;

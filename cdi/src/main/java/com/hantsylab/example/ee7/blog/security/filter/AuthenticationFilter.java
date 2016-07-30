@@ -1,5 +1,8 @@
-package com.hantsylab.example.ee7.blog.security;
+package com.hantsylab.example.ee7.blog.security.filter;
 
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUser;
+import com.hantsylab.example.ee7.blog.security.Secured;
+import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import java.io.IOException;
 import javax.annotation.Priority;
 import javax.enterprise.event.Event;
@@ -24,6 +27,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Inject
     @AuthenticatedUser
     Event<String> userAuthenticatedEvent;
+
+    @Inject
+    JwtHelper jwtHelper;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -54,44 +60,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String token) throws Exception {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        
-        ///userAuthenticatedEvent.fire(username);
+        String username = jwtHelper.parseToken(token);
+        userAuthenticatedEvent.fire(username);
     }
 
-    //@Context
-    // SecurityContext securityContext;
-//    Principal principal = securityContext.getUserPrincipal();
-//    String username = principal.getName();
-//    private void setupRequestConetextPrinciple(ContainerRequestContext requestContext) {
-//
-//        requestContext.setSecurityContext(new SecurityContext() {
-//
-//            @Override
-//            public Principal getUserPrincipal() {
-//
-//                return new Principal() {
-//
-//                    @Override
-//                    public String getName() {
-//                        return username;
-//                    }
-//                };
-//            }
-//
-//            @Override
-//            public boolean isUserInRole(String role) {
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean isSecure() {
-//                return false;
-//            }
-//
-//            @Override
-//            public String getAuthenticationScheme() {
-//                return null;
-//            }
-//        });
-//    }
 }

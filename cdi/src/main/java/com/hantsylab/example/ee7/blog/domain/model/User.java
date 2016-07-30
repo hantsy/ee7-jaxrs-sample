@@ -6,8 +6,10 @@
 package com.hantsylab.example.ee7.blog.domain.model;
 
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
+import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -59,8 +61,15 @@ public class User extends AbstractEntity {
 //        }
 //    )
 //    private List<Role> roles = new ArrayList<>();
+    @Column(name = "role_name")
+    private Role role = Role.USER;
     
-    @Column(name="role_name")
-    private String role;
+    @Column(name="created_at")
+    private OffsetDateTime createdAt;
+    
+    @PrePersist
+    public void beforePersist(){
+        this.createdAt=OffsetDateTime.now();
+    }
 
 }

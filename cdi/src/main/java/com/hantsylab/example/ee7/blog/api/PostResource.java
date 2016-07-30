@@ -1,5 +1,7 @@
 package com.hantsylab.example.ee7.blog.api;
 
+import com.hantsylab.example.ee7.blog.domain.model.Role;
+import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.service.BlogService;
 import com.hantsylab.example.ee7.blog.service.CommentDetail;
 import com.hantsylab.example.ee7.blog.service.CommentForm;
@@ -30,6 +32,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @RequestScoped
 @Path("posts")
+@Secured({Role.USER})
 public class PostResource {
 
     private static final Logger LOG = Logger.getLogger(PostResource.class.getName());
@@ -71,6 +74,7 @@ public class PostResource {
 
     @DELETE
     @Path("{id}")
+    @Secured({Role.ADMIN})
     public Response delete(@PathParam("id") Long id) {
         service.deletePostById(id);
         return Response.noContent().build();
