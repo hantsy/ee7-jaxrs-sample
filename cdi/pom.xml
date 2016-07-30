@@ -426,6 +426,7 @@ language governing permissions and limitations under the License. -->
             <properties>
                 <serverProfile>standalone-full.xml</serverProfile>
                 <serverRoot>${project.build.directory}/wildfly-${version.wildfly}</serverRoot>
+                <hibernate.version>5.2.1.Final</hibernate.version>
             </properties>
             <dependencies>
                 <dependency>
@@ -459,6 +460,16 @@ language governing permissions and limitations under the License. -->
                                             <type>zip</type>
                                             <overWrite>false</overWrite>
                                             <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                        <!-- Hibernate ORM modules; Unpacked into target/wildfly-10.0.0.Final/modules -->
+                                        <artifactItem>
+                                            <groupId>org.hibernate</groupId>
+                                            <artifactId>hibernate-orm-modules</artifactId>
+                                            <version>${hibernate.version}</version>
+                                            <classifier>wildfly-10-dist</classifier>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${serverRoot}/modules</outputDirectory>
                                         </artifactItem>
                                     </artifactItems>
                                 </configuration>
