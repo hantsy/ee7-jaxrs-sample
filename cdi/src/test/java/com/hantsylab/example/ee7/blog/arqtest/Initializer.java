@@ -8,7 +8,6 @@ package com.hantsylab.example.ee7.blog.arqtest;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
-import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
@@ -44,6 +43,10 @@ public class Initializer {
         User user = Fixtures.newUser("Hantsy", "Bai", "testuser", encoder.encode("test123"));
         user.setRole(Role.USER);
         users.save(user);
+        
+        User admin = Fixtures.newUser("Hantsy", "Bai", "admin", encoder.encode("admin123"));
+        admin.setRole(Role.ADMIN);
+        users.save(admin);
 
 //        Post post = Fixtures.newPost("test", "test");
 //        posts.save(post);

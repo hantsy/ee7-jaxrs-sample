@@ -32,7 +32,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @RequestScoped
 @Path("posts")
-@Secured({Role.USER})
+@Secured({Role.USER, Role.ADMIN})
 public class PostResource {
 
     private static final Logger LOG = Logger.getLogger(PostResource.class.getName());

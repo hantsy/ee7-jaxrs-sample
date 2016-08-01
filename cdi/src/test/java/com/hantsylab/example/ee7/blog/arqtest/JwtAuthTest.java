@@ -176,6 +176,7 @@ public class JwtAuthTest {
             //Add JPA persistence configration.
             //WARN: In a war package, persistence.xml should be put into /WEB-INF/classes/META-INF/, not /META-INF
             .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addAsResource("META-INF/test-orm.xml", "META-INF/orm.xml")
             // Enable CDI
             //WARN: In a war package, persistence.xml should be put into /WEB-INF not /META-INF
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");

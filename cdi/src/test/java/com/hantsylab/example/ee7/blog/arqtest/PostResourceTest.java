@@ -3,27 +3,52 @@ package com.hantsylab.example.ee7.blog.arqtest;
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
+import com.hantsylab.example.ee7.blog.api.AuthResource;
+import com.hantsylab.example.ee7.blog.api.AuthenticationExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.CommentResource;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
 import com.hantsylab.example.ee7.blog.api.PostResource;
 import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
+import com.hantsylab.example.ee7.blog.api.UserResource;
 import com.hantsylab.example.ee7.blog.api.ValidationError;
 import com.hantsylab.example.ee7.blog.api.ValidationExceptionMapper;
+import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
+import com.hantsylab.example.ee7.blog.crypto.bcrypt.BCryptPasswordEncoder;
+import com.hantsylab.example.ee7.blog.crypto.plain.PlainPasswordEncoder;
 import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
 import com.hantsylab.example.ee7.blog.domain.model.Comment;
 import com.hantsylab.example.ee7.blog.domain.model.Comment_;
 import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Post_;
+import com.hantsylab.example.ee7.blog.domain.model.Role;
+import com.hantsylab.example.ee7.blog.domain.model.User;
+import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
+import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUser;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUserLiteral;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUserProducer;
+import com.hantsylab.example.ee7.blog.security.Secured;
+import com.hantsylab.example.ee7.blog.security.filter.AuthenticationFilter;
+import com.hantsylab.example.ee7.blog.security.filter.AuthorizationFilter;
+import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
+import com.hantsylab.example.ee7.blog.service.AuthenticationException;
 import com.hantsylab.example.ee7.blog.service.BlogService;
 import com.hantsylab.example.ee7.blog.service.CommentDetail;
 import com.hantsylab.example.ee7.blog.service.CommentForm;
+import com.hantsylab.example.ee7.blog.service.Credentials;
+import com.hantsylab.example.ee7.blog.service.IdToken;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
+import com.hantsylab.example.ee7.blog.service.SignupForm;
+import com.hantsylab.example.ee7.blog.service.UserDetail;
+import com.hantsylab.example.ee7.blog.service.UserForm;
+import com.hantsylab.example.ee7.blog.service.UserService;
+import com.hantsylab.example.ee7.blog.service.UsernameWasTakenException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -45,10 +70,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -69,7 +94,8 @@ public class PostResourceTest {
                 "org.projectlombok:lombok:1.16.8",
                 "org.modelmapper:modelmapper:0.7.5",
                 "org.apache.commons:commons-lang3:3.4",
-                "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3"
+                "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3",
+                "io.jsonwebtoken:jjwt:0.6.0"
             )
             .withTransitivity()
             .asFile();
@@ -89,9 +115,24 @@ public class PostResourceTest {
                 Comment_.class,
                 CommentRepository.class
             )
+            .addClasses(
+                Role.class,
+                User.class,
+                User_.class,
+                UserRepository.class//,
+            )
             //add service classes
-            .addClasses(BlogService.class,
+            .addClasses(
+                BlogService.class,
+                UserService.class,
                 ResourceNotFoundException.class,
+                UsernameWasTakenException.class,
+                UserForm.class,
+                UserDetail.class,
+                Credentials.class,
+                SignupForm.class,
+                IdToken.class,
+                Credentials.class,
                 PostForm.class,
                 PostDetail.class,
                 CommentForm.class,
@@ -101,17 +142,39 @@ public class PostResourceTest {
             .addClasses(
                 JaxrsActiviator.class,
                 PostResource.class,
+                UserResource.class,
                 CommentResource.class,
                 JacksonConfig.class,
                 ResourceNotFoundExceptionMapper.class,
                 ValidationExceptionMapper.class,
                 ValidationError.class,
-                CustomBeanParamProvider.class
+                CustomBeanParamProvider.class,
+                AuthenticationException.class,
+                AuthenticationExceptionMapper.class,
+                AuthResource.class
+            )
+            .addPackage(PlainPasswordEncoder.class.getPackage())
+            .addPackage(BCryptPasswordEncoder.class.getPackage())
+            .addPackage(PasswordEncoder.class.getPackage())
+            .addClasses(
+                AuthenticationFilter.class,
+                AuthorizationFilter.class,
+                JwtHelper.class,
+                //JwtUser.class,
+                //UserPrincipal.class,
+                AuthenticatedUser.class,
+                AuthenticatedUserProducer.class,
+                AuthenticatedUserLiteral.class,
+                Secured.class
+            )
+            .addClasses(
+                Initializer.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
             //WARN: In a war package, persistence.xml should be put into /WEB-INF/classes/META-INF/, not /META-INF
             .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addAsResource("META-INF/test-orm.xml", "META-INF/orm.xml")
             // Enable CDI
             //WARN: In a war package, persistence.xml should be put into /WEB-INF not /META-INF
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -132,6 +195,15 @@ public class PostResourceTest {
         client.register(JacksonConfig.class);
         client.register(ResourceNotFoundExceptionMapper.class);
         client.register(ValidationExceptionMapper.class);
+
+        final WebTarget targetAuthGetAll = client.target(URI.create(new URL(base, "api/auth/login").toExternalForm()));
+        final Response resAuthGetAll = targetAuthGetAll.request()
+            .accept(MediaType.APPLICATION_JSON_TYPE)
+            .post(Entity.json(new Credentials("admin", "admin123", true)));
+        assertEquals(200, resAuthGetAll.getStatus());
+        IdToken token = resAuthGetAll.readEntity(IdToken.class);
+
+        client.register(new JwtTokenAuthentication(token.getToken()));
     }
 
     @After

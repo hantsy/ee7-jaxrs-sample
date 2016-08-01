@@ -17,7 +17,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Setter
 @Getter
-@EntityListeners(AuditEntityListener.class)
+//@EntityListeners(AuditEntityListener.class)
 public class AbstractAuditableEntity extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
