@@ -1,5 +1,7 @@
 package com.hantsylab.example.ee7.blog.api;
 
+import com.hantsylab.example.ee7.blog.domain.model.Role;
+import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.service.UserDetail;
 import com.hantsylab.example.ee7.blog.service.UserForm;
 import com.hantsylab.example.ee7.blog.service.UserService;
@@ -29,6 +31,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @RequestScoped
 @Path("users")
+@Secured({Role.ADMIN})
 public class UserResource {
 
     private static final Logger LOG = Logger.getLogger(UserResource.class.getName());

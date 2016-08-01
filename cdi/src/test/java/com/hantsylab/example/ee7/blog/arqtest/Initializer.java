@@ -10,7 +10,6 @@ import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
-import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -31,8 +30,8 @@ public class Initializer {
     @Inject
     UserRepository users;
 
-    @Inject
-    PostRepository posts;
+//    @Inject
+//    PostRepository posts;
 
     @Inject
     @Crypto(value = Crypto.Type.BCRYPT)

@@ -3,6 +3,7 @@ package com.hantsylab.example.ee7.blog.arqtest;
 import com.hantsylab.example.ee7.blog.DTOUtils;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.JaxrsActiviator;
+import com.hantsylab.example.ee7.blog.api.AuthResource;
 import com.hantsylab.example.ee7.blog.api.AuthenticationExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
@@ -20,6 +21,12 @@ import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUser;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUserLiteral;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUserProducer;
+import com.hantsylab.example.ee7.blog.security.Secured;
+import com.hantsylab.example.ee7.blog.security.filter.AuthenticationFilter;
+import com.hantsylab.example.ee7.blog.security.filter.AuthorizationFilter;
 import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import com.hantsylab.example.ee7.blog.service.AuthenticationException;
 import com.hantsylab.example.ee7.blog.service.Credentials;
@@ -51,10 +58,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -84,11 +91,6 @@ public class UserResourceTest {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
             .addAsLibraries(extraJars)
             .addClasses(DTOUtils.class, Fixtures.class)
-            .addPackage(PlainPasswordEncoder.class.getPackage())
-            .addPackage(BCryptPasswordEncoder.class.getPackage())
-            .addPackage(PasswordEncoder.class.getPackage())
-            //jwt
-            .addClasses(JwtHelper.class)
             //domain.support package.
             .addPackage(AbstractEntity.class.getPackage())
             //domain.convert package.
@@ -119,7 +121,7 @@ public class UserResourceTest {
             .addClasses(
                 JaxrsActiviator.class,
                 UserResource.class,
-                // CommentResource.class,
+                AuthResource.class,
                 JacksonConfig.class,
                 ResourceNotFoundExceptionMapper.class,
                 ValidationExceptionMapper.class,
@@ -129,10 +131,28 @@ public class UserResourceTest {
                 ValidationError.class,
                 CustomBeanParamProvider.class
             )
+            .addPackage(PlainPasswordEncoder.class.getPackage())
+            .addPackage(BCryptPasswordEncoder.class.getPackage())
+            .addPackage(PasswordEncoder.class.getPackage())
+            .addClasses(
+                AuthenticationFilter.class,
+                AuthorizationFilter.class,
+                JwtHelper.class,
+                //JwtUser.class,
+                //UserPrincipal.class,
+                AuthenticatedUser.class,
+                AuthenticatedUserProducer.class,
+                AuthenticatedUserLiteral.class,
+                Secured.class
+            )
+            .addClasses(
+                Initializer.class
+            )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
             //WARN: In a war package, persistence.xml should be put into /WEB-INF/classes/META-INF/, not /META-INF
             .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addAsResource("META-INF/test-orm.xml", "META-INF/orm.xml")
             // Enable CDI
             //WARN: In a war package, persistence.xml should be put into /WEB-INF not /META-INF
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -153,6 +173,16 @@ public class UserResourceTest {
         client.register(JacksonConfig.class);
         client.register(ResourceNotFoundExceptionMapper.class);
         client.register(ValidationExceptionMapper.class);
+
+        final WebTarget targetAuthGetAll = client.target(URI.create(new URL(base, "api/auth/login").toExternalForm()));
+        final Response resAuthGetAll = targetAuthGetAll.request()
+            .accept(MediaType.APPLICATION_JSON_TYPE)
+            .post(Entity.json(new Credentials("admin", "admin123", true)));
+        assertEquals(200, resAuthGetAll.getStatus());
+        IdToken token = resAuthGetAll.readEntity(IdToken.class);
+
+        client.register(new JwtTokenAuthentication(token.getToken()));
+
     }
 
     @After
@@ -176,8 +206,10 @@ public class UserResourceTest {
         final Response resGetAll = targetGetAll.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, resGetAll.getStatus());
         UserDetail[] results = resGetAll.readEntity(UserDetail[].class);
+        
+        LOG.log(Level.INFO, "get all users @{0}", results);
         assertTrue(results != null);
-        assertTrue(results.length == 0);
+        assertTrue(results.length == 2);
 
         //You have to close the response manually... issue# RESTEASY-1120
         //see https://issues.jboss.org/browse/RESTEASY-1120
@@ -199,7 +231,7 @@ public class UserResourceTest {
         assertEquals(200, resGetAll2.getStatus());
         UserDetail[] results2 = resGetAll2.readEntity(UserDetail[].class);
         assertTrue(results2 != null);
-        assertTrue(results2.length == 1);
+        assertTrue(results2.length == 3);
 
         resGetAll2.close();
 
