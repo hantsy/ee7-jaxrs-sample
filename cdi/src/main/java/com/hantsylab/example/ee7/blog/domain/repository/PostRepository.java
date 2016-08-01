@@ -48,6 +48,26 @@ public class PostRepository extends AbstractRepository<Post, Long> {
         return query.getResultList();
     }
 
+    public List<Post> findByCreatedBy(String username) {
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
+
+        CriteriaQuery<Post> q = cb.createQuery(Post.class);
+        Root<Post> c = q.from(Post.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(
+            cb.equal(c.get(Post_.createdBy), username)
+        );
+
+        q.where(predicates.toArray(new Predicate[predicates.size()]));
+
+        TypedQuery<Post> query = em.createQuery(q);
+        List<Post> posts = query.getResultList();
+
+        return posts;
+    }
+
     @Override
     protected EntityManager entityManager() {
         return this.em;

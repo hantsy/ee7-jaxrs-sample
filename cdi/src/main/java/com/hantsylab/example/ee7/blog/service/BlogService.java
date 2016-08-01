@@ -34,6 +34,11 @@ public class BlogService {
         return DTOUtils.mapList(postlist, PostDetail.class);
     }
 
+    public List<PostDetail> findByUsername(String username) {
+        List<Post> postlist = posts.findByCreatedBy(username);
+        return DTOUtils.mapList(postlist, PostDetail.class);
+    }
+
     public PostDetail createPost(PostForm form) {
         Post post = Post.builder()
             .title(form.getTitle())

@@ -73,7 +73,7 @@ public class UserService {
         }
 
         User user = DTOUtils.map(form, User.class);
-        
+
         // ENCODE PASSWORD
         user.setPassword(this.encoder.encode(form.getPassword()));
         User saved = users.save(user);
@@ -117,6 +117,21 @@ public class UserService {
             throw new ResourceNotFoundException("user:" + id + " was not found");
         }
         return user;
+    }
+
+    public void updateProfile(Long id, ProfileForm form) {
+        User user = fetchUserById(id);
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        this.users.save(user);
+    }
+
+    public void updatePassword(Long id, PasswordForm form) {
+        User user = fetchUserById(id);
+        if (!this.encoder.matches(form.getOldPassword(), user.getPassword())) {
+            throw new PasswordMismatchedException("current password is mismatched.");
+        }
+        user.setPassword(this.encoder.encode(form.getNewPassword()));
     }
 
 }
