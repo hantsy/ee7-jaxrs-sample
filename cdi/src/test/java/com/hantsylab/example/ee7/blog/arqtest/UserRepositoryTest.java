@@ -38,8 +38,8 @@ public class UserRepositoryTest {
             .addPackage(AbstractEntity.class.getPackage())
             //domain.convert package.
             .addPackage(LocalDateConverter.class.getPackage())
-            .addClasses(User.class, User_.class, Role.class)
-            .addClasses(UserRepository.class)
+            .addPackage(User.class.getPackage())
+            .addPackage(UserRepository.class.getPackage())
             .addClasses(Fixtures.class, StringUtils.class)
             .addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");

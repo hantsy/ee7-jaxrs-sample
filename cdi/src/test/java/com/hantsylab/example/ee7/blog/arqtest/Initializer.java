@@ -45,8 +45,8 @@ public class Initializer {
         user.setRole(Role.USER);
         users.save(user);
 
-        Post post = Fixtures.newPost("test", "test");
-        posts.save(post);
+//        Post post = Fixtures.newPost("test", "test");
+//        posts.save(post);
     }
 
 }

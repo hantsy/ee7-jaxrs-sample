@@ -28,5 +28,7 @@ public class PostDetail implements Serializable {
     private OffsetDateTime createdAt;
     
     private OffsetDateTime updatedAt;
+    
+    private String createdByUsername;
 
 }

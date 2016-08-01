@@ -22,18 +22,19 @@ public class AbstractAuditableEntity extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt;
 
- 	@Column(name="created_at")
-	private OffsetDateTime createdAt;
-	
-	@Column(name="updated_at")
-	private OffsetDateTime updatedAt;
-    
-    @ManyToOne()
-    @JoinColumn(name="created_by")
-    private User createdBy;
-    
-    @ManyToOne()
-    @JoinColumn(name="updated_by")
-    private User updatedBy;
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+
+//    @ManyToOne()
+//    @JoinColumn(name="created_by")
+    @Column(name = "created_by")
+    private String createdBy;
+
+//    @ManyToOne()
+//    @JoinColumn(name="updated_by")
+    @Column(name = "updated_by")
+    private String updatedBy;
 }

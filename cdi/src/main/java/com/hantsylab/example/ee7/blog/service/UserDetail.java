@@ -5,10 +5,8 @@
  */
 package com.hantsylab.example.ee7.blog.service;
 
-import com.hantsylab.example.ee7.blog.domain.model.Role;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,5 +35,7 @@ public class UserDetail implements Serializable {
     private boolean active;
 
     private String role;
+
+    private OffsetDateTime createdAt;
 
 }

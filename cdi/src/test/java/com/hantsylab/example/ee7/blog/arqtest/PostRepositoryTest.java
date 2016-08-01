@@ -37,8 +37,8 @@ public class PostRepositoryTest {
             .addPackage(AbstractEntity.class.getPackage())
             //domain.convert package.
             .addPackage(LocalDateConverter.class.getPackage())
-            .addClasses(Post.class, Post_.class)
-            .addClasses(PostRepository.class)
+            .addPackage(Post.class.getPackage())
+            .addPackage(PostRepository.class.getPackage())
             .addClasses(Fixtures.class, StringUtils.class)
             .addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");

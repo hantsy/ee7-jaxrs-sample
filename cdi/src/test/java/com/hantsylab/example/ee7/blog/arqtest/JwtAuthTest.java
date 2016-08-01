@@ -29,6 +29,7 @@ import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import com.hantsylab.example.ee7.blog.security.AuthenticatedUser;
+import com.hantsylab.example.ee7.blog.security.AuthenticatedUserLiteral;
 import com.hantsylab.example.ee7.blog.security.AuthenticatedUserProducer;
 import com.hantsylab.example.ee7.blog.security.Secured;
 import com.hantsylab.example.ee7.blog.security.filter.AuthenticationFilter;
@@ -162,9 +163,10 @@ public class JwtAuthTest {
                 AuthorizationFilter.class,
                 JwtHelper.class,
                 //JwtUser.class,
-               //UserPrincipal.class,
+                //UserPrincipal.class,
                 AuthenticatedUser.class,
                 AuthenticatedUserProducer.class,
+                AuthenticatedUserLiteral.class,
                 Secured.class
             )
             .addClasses(
@@ -218,6 +220,9 @@ public class JwtAuthTest {
 
     }
 
+    private static final String TITLE = "test_title";
+    private static final String CONTENT = "test_content";
+
     @Test
     @RunAsClient
     public void testGetPostsWithAuthentication() throws MalformedURLException {
@@ -239,16 +244,32 @@ public class JwtAuthTest {
 
         PostDetail[] posts = resGetAll.readEntity(PostDetail[].class);
 
-        assertTrue(posts.length == 1);
-
-        Long id = posts[0].getId();
-
-        //You have to close the response manually... issue# RESTEASY-1120
+        assertTrue(posts.length == 0);
+                //You have to close the response manually... issue# RESTEASY-1120
         //see https://issues.jboss.org/browse/RESTEASY-1120
         resGetAll.close();
 
-        //get all posts
-        final WebTarget targetDelAll = client.target(URI.create(new URL(base, "api/posts/"+id).toExternalForm()));
+        PostForm newPostForm = Fixtures.newPostForm(TITLE, CONTENT);
+        final WebTarget targetPost = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
+        final Response resPost = targetPost.request().post(Entity.json(newPostForm));
+        assertEquals(201, resPost.getStatus());
+        String savedPostLocaiton = resPost.getHeaderString("Location");
+        LOG.log(Level.INFO, "saved post location @{0}", savedPostLocaiton);
+
+        resPost.close();
+
+        //verify new created post in the findAll result list.
+        final WebTarget targetGetAll2 = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
+        final Response resGetAll2 = targetGetAll2.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(200, resGetAll2.getStatus());
+        PostDetail[] results2 = resGetAll2.readEntity(PostDetail[].class);
+        assertTrue(results2 != null);
+        assertTrue(results2.length == 1);
+
+        resGetAll2.close();
+
+        //delete post
+        final WebTarget targetDelAll = client.target(URI.create(new URL(savedPostLocaiton).toExternalForm()));
         final Response resDelAll = targetDelAll.request().accept(MediaType.APPLICATION_JSON_TYPE).delete();
         assertEquals(403, resDelAll.getStatus());
     }
