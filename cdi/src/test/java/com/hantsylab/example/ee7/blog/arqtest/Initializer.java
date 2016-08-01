@@ -43,7 +43,7 @@ public class Initializer {
         user.setRole(Role.USER);
         users.save(user);
         
-        User admin = Fixtures.newUser("Hantsy", "Bai", "admin", encoder.encode("admin123"));
+        User admin = Fixtures.newUser("Foo", "Bar", "admin", encoder.encode("admin123"));
         admin.setRole(Role.ADMIN);
         users.save(admin);
 

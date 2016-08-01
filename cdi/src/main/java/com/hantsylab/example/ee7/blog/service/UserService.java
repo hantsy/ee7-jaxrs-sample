@@ -132,6 +132,8 @@ public class UserService {
             throw new PasswordMismatchedException("current password is mismatched.");
         }
         user.setPassword(this.encoder.encode(form.getNewPassword()));
+        
+        this.users.save(user);
     }
 
 }

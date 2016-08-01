@@ -68,7 +68,7 @@ public class ProfileResource {
     public Response updateProfile(@Valid ProfileForm form) {
         LOG.info("updating profile...");
         this.userService.updateProfile(this.me.getId(), form);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
     @PUT
@@ -77,7 +77,7 @@ public class ProfileResource {
     public Response updatePassword(@Valid PasswordForm form) {
         LOG.info("updating password...");
         this.userService.updatePassword(this.me.getId(), form);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
 }
