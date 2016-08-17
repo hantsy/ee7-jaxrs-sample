@@ -17,7 +17,7 @@ language governing permissions and limitations under the License. -->
     <artifactId>blog-api-cdi</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Blog Sample APIs with Java EE 7 and Jaxrs(CDI and Apache DeltaSpike)</name>
+    <name>Blog Sample APIs with Java EE 7 and Jaxrs(CDI)</name>
     <description>A starter Java EE 7 webapp project for use on JBoss WildFly / WildFly, generated from the jboss-javaee6-webapp archetype</description>
 
     <url>http://wildfly.org</url>
@@ -47,6 +47,7 @@ language governing permissions and limitations under the License. -->
         <version.org.wildfly.arquillian>2.0.0.Final</version.org.wildfly.arquillian>
         <version.jackson>2.6.3</version.jackson>
         <version.deltaspike>1.7.1</version.deltaspike>
+        <version.hibernate>5.2.2.Final</version.hibernate>
 
         <!-- Apache components versions -->
         <version.httpclient>4.5</version.httpclient>
@@ -117,6 +118,13 @@ language governing permissions and limitations under the License. -->
     </dependencyManagement>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
         
         <!-- Apache DeltaSpike-->
 <!--        <dependency>
@@ -195,6 +203,13 @@ language governing permissions and limitations under the License. -->
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Import the EJB API, we use provided scope as the API is included in 
         JBoss WildFly -->
@@ -234,6 +249,7 @@ language governing permissions and limitations under the License. -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${version.hibernate}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -349,7 +365,6 @@ language governing permissions and limitations under the License. -->
             <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

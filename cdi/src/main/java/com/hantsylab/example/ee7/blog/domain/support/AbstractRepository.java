@@ -1,12 +1,15 @@
 package com.hantsylab.example.ee7.blog.domain.support;
 
-import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 /**
  *
@@ -48,6 +51,20 @@ public abstract class AbstractRepository<T extends AbstractEntity, ID> {
     public void delete(T entity) {
         T _entity = entityManager().merge(entity);
         entityManager().remove(_entity);
+    }
+
+    public Stream<T> stream() {
+        CriteriaBuilder cb = this.entityManager().getCriteriaBuilder();
+        CriteriaQuery<T> q = cb.createQuery(entityClass());
+        Root<T> c = q.from(entityClass());
+        
+        Session session = this.entityManager().unwrap(Session.class);
+        return session.createQuery(q).stream();
+    }
+
+    public Optional<T> findOptionalById(Long id) {
+        Session session = this.entityManager().unwrap(Session.class);
+        return session.byId(entityClass()).loadOptional(id);
     }
 
 }

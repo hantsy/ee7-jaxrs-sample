@@ -5,6 +5,7 @@ import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -77,6 +78,10 @@ public class UserRepository extends AbstractRepository<User, Long> {
         }
 
         return null;
+    }
+
+    public Optional<User> findOptionalByUsername(String username) {
+        return stream().filter(u -> u.getUsername().equals(username)).findFirst();
     }
 
 }

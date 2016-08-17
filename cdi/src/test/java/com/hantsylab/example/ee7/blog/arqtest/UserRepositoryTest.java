@@ -23,13 +23,18 @@ import org.junit.runner.RunWith;
 import com.hantsylab.example.ee7.blog.Fixtures;
 import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
 import com.hantsylab.example.ee7.blog.domain.model.User;
-import com.hantsylab.example.ee7.blog.domain.model.User_;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
-import com.hantsylab.example.ee7.blog.domain.model.Role;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.transaction.Transactional;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class UserRepositoryTest {
+
+    private static final Logger LOG = Logger.getLogger(UserRepositoryTest.class.getName());
 
     @Deployment(name = "test")
     public static Archive<?> createDeployment() {
@@ -100,6 +105,18 @@ public class UserRepositoryTest {
         assertEquals(LAST_NAME, found.getLastName());
         assertNotNull(found.getId());
         assertNotNull(found.getVersion());
+    }
+
+    @Test
+    public void testFindOptionalById() {
+        Optional<User> found = users.findOptionalById(_saved.getId());
+        assertTrue(found.isPresent());
+    }
+
+    @Test
+    public void testFindOptionalByUsername() {
+        Optional<User> found = users.findOptionalByUsername(USERNAME);
+        assertTrue(found.isPresent());
     }
 
     @Test
