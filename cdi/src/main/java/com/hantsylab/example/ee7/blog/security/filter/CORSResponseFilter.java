@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hantsylab.example.ee7.blog.security.filter;
 
 import java.io.IOException;
@@ -12,6 +7,7 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
 /**
@@ -19,9 +15,10 @@ import javax.ws.rs.ext.Provider;
  * @author hantsy
  */
 @Provider
-public class CORSFilter implements ContainerResponseFilter {
+@PreMatching
+public class CORSResponseFilter implements ContainerResponseFilter {
 
-    private final static Logger LOG = Logger.getLogger(CORSFilter.class.getName());
+    private final static Logger LOG = Logger.getLogger(CORSResponseFilter.class.getName());
 
     final static String DEFAULT_ALLOW_METHODS = "GET,POST,PUT,DELETE,OPTIONS,HEAD";
     final static String DEFAULT_ALLOW_HEADERS = "origin,content-type,accept,authorization";
@@ -45,11 +42,13 @@ public class CORSFilter implements ContainerResponseFilter {
     }
 
     private boolean isPreflightRequest(ContainerRequestContext requestContext) {
-        return requestContext.getHeaderString("Origin") != null && HttpMethod.OPTIONS.equals(requestContext.getMethod());
+        return requestContext.getHeaderString("Origin") != null
+            && HttpMethod.OPTIONS.equals(requestContext.getMethod());
     }
 
     private String createRequestedHeaders(ContainerRequestContext requestContext) {
         String headers = requestContext.getHeaderString("Access-Control-Request-Headers");
+        LOG.log(Level.FINEST, "Access-Control-Request-Headers:{0}", headers);
         return headers != null ? headers : DEFAULT_ALLOW_HEADERS;
     }
 

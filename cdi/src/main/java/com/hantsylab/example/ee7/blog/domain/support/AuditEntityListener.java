@@ -45,6 +45,9 @@ public class AuditEntityListener {
     private String currentUser() {
         User user = CDI.current().select(User.class, new AuthenticatedUserLiteral()).get();
         LOG.log(Level.FINEST, "get current user form EntityListener@{0}", user);
+        if (user == null) {
+            return null;
+        }
         return user.getUsername();
     }
 }

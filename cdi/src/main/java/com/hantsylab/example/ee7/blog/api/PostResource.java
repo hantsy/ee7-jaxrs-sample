@@ -32,7 +32,6 @@ import javax.ws.rs.core.UriInfo;
  */
 @RequestScoped
 @Path("posts")
-@Secured({Role.USER, Role.ADMIN})
 public class PostResource {
 
     private static final Logger LOG = Logger.getLogger(PostResource.class.getName());
@@ -58,6 +57,7 @@ public class PostResource {
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Secured({Role.USER, Role.ADMIN})
     public Response save(@Valid PostForm post) {
         PostDetail saved = service.createPost(post);
         return Response.created(uriInfo.getBaseUriBuilder().path("posts/{id}").build(saved.getId())).build();
@@ -66,6 +66,7 @@ public class PostResource {
     @PUT
     @Path("{id}")
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Secured({Role.USER, Role.ADMIN})
     public Response update(@PathParam("id") Long id,
         @Valid PostForm post) {
         PostDetail saved = service.updatePost(id, post);
@@ -92,6 +93,7 @@ public class PostResource {
     @POST
     @Path("{id}/comments")
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Secured({Role.USER, Role.ADMIN})
     public Response createCommentsOfPost(@PathParam("id") Long postId, @Valid CommentForm form) {
         CommentDetail saved = service.createCommentOfPost(postId, form);
         return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId())).build();
