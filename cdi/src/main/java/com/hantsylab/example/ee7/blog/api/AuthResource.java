@@ -44,8 +44,8 @@ public class AuthResource {
     @Path("signup")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public Response signup(@Valid SignupForm form) {
-        service.registerUser(form);
-        return Response.ok().build();
+        LOG.log(Level.INFO, "signup with data@{0}", form);
+        return Response.ok(service.registerUser(form)).build();
     }
 
     @POST

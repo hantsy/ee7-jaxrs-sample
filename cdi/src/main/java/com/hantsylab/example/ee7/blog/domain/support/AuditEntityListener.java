@@ -29,7 +29,10 @@ public class AuditEntityListener {
             final OffsetDateTime now = OffsetDateTime.now();
             o.setCreatedAt(now);
             o.setUpdatedAt(now);
-            o.setCreatedBy(currentUser());
+
+            if (o.getCreatedBy() == null) {
+                o.setCreatedBy(currentUser());
+            }
         }
     }
 
@@ -38,7 +41,10 @@ public class AuditEntityListener {
         if (entity instanceof AbstractAuditableEntity) {
             AbstractAuditableEntity o = (AbstractAuditableEntity) entity;
             o.setUpdatedAt(OffsetDateTime.now());
-            o.setUpdatedBy(currentUser());
+
+            if (o.getUpdatedBy() == null) {
+                o.setUpdatedBy(currentUser());
+            }
         }
     }
 

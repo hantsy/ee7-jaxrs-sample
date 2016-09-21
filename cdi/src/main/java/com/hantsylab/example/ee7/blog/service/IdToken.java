@@ -21,4 +21,6 @@ public class IdToken implements Serializable {
 
     @JsonProperty("id_token")
     private String token;
+
+    private UserDetail user;
 }

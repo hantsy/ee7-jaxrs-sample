@@ -44,7 +44,7 @@ public class Initializer {
         User user = User.builder()
             .firstName("Hantsy")
             .lastName("Bai")
-            .username("test123")
+            .username("test")
             .password(encoder.encode("test123"))
             .role(Role.USER)
             .build();
@@ -60,8 +60,26 @@ public class Initializer {
 
         users.save(admin);
 
-        Post post1 = Post.builder().title("My first Post").content("Content of my first Post").build();
+        Post post1 = Post.builder()
+            .title("Getting started with REST")
+            .content("Content of Getting started with REST")
+            .build();
+        post1.setCreatedBy("test");
         posts.save(post1);
+
+        Post post2 = Post.builder()
+            .title("Getting started with AngularJS 1.x")
+            .content("Content of Getting started with AngularJS 1.x")
+            .build();
+        post2.setCreatedBy("test");
+        posts.save(post2);
+        
+        Post post3 = Post.builder()
+            .title("Getting started with Angular2")
+            .content("Content of Getting started with Angular2")
+            .build();
+        post3.setCreatedBy("test");
+        posts.save(post3);
 
     }
 

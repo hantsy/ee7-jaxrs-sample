@@ -63,10 +63,10 @@ public class UserService {
             throw new AuthenticationException();
         }
 
-        return new IdToken(jwtHelper.generateToken(user));
+        return new IdToken(jwtHelper.generateToken(user), DTOUtils.map(user, UserDetail.class));
     }
 
-    public UserDetail registerUser(SignupForm form) {
+    public IdToken registerUser(SignupForm form) {
         final String username = form.getUsername();
         if (usernameExists(username)) {
             throw new UsernameWasTakenException("username:" + username + " was taken.");
@@ -78,7 +78,7 @@ public class UserService {
         user.setPassword(this.encoder.encode(form.getPassword()));
         User saved = users.save(user);
 
-        return DTOUtils.map(saved, UserDetail.class);
+        return new IdToken(jwtHelper.generateToken(saved), DTOUtils.map(saved, UserDetail.class));
     }
 
     public UserDetail createUser(UserForm form) {
@@ -132,7 +132,7 @@ public class UserService {
             throw new PasswordMismatchedException("current password is mismatched.");
         }
         user.setPassword(this.encoder.encode(form.getNewPassword()));
-        
+
         this.users.save(user);
     }
 

@@ -1,6 +1,7 @@
 package com.hantsylab.example.ee7.blog.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
         LOG.info("Configured Jackson Json module:");
         mapper.findAndRegisterModules();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         return mapper;

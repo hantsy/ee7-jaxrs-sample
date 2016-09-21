@@ -99,4 +99,22 @@ public class PostResource {
         return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId())).build();
     }
 
+    @PUT
+    @Path("{id}/comments/{commentId}")
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    public Response updateComment(@PathParam("id") Long id,
+        @PathParam("commentId") Long commentId,
+        @Valid CommentForm form) {
+        CommentDetail saved = service.updateComment(commentId, form);
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteComment(@PathParam("id") Long id,
+        @PathParam("commentId") Long commentId) {
+        service.deleteCommentById(commentId);
+        return Response.noContent().build();
+    }
+
 }
