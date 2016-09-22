@@ -47,7 +47,7 @@ public class ProfileResource {
     UriInfo uriInfo;
 
     @GET
-    @Path("profile")
+    @Path("")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response profileInfo() {
         LOG.info("get profile...");

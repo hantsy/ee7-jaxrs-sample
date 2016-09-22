@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-wildfly:deploy</actionName>
+            <displayName>Wildly Deploy</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>wildfly:deploy</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-Wildfly undeploy</actionName>
+            <displayName>Wildfly Undeploy</displayName>
+            <goals>
+                <goal>wildfly:undeploy</goal>
+            </goals>
+        </action>
+    </actions>
