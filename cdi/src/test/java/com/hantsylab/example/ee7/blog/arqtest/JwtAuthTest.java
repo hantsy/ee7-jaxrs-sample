@@ -41,8 +41,11 @@ import com.hantsylab.example.ee7.blog.service.CommentDetail;
 import com.hantsylab.example.ee7.blog.service.CommentForm;
 import com.hantsylab.example.ee7.blog.service.Credentials;
 import com.hantsylab.example.ee7.blog.service.IdToken;
+import com.hantsylab.example.ee7.blog.service.PasswordForm;
+import com.hantsylab.example.ee7.blog.service.PasswordMismatchedException;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
+import com.hantsylab.example.ee7.blog.service.ProfileForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
 import com.hantsylab.example.ee7.blog.service.SignupForm;
 import com.hantsylab.example.ee7.blog.service.UserDetail;
@@ -127,12 +130,15 @@ public class JwtAuthTest {
                 PostForm.class,
                 PostDetail.class,
                 CommentForm.class,
-                CommentDetail.class
+                CommentDetail.class,
+                ProfileForm.class,
+                PasswordForm.class
             )
             .addClasses(
                 UserService.class,
                 ResourceNotFoundException.class,
                 UsernameWasTakenException.class,
+                PasswordMismatchedException.class,
                 UserForm.class,
                 UserDetail.class,
                 Credentials.class,
@@ -148,6 +154,7 @@ public class JwtAuthTest {
                 CommentResource.class,
                 JacksonConfig.class,
                 ResourceNotFoundExceptionMapper.class,
+                //                PasswordMisamatchedExceptionMapper.class,
                 ValidationExceptionMapper.class,
                 ValidationError.class,
                 CustomBeanParamProvider.class,
@@ -169,8 +176,7 @@ public class JwtAuthTest {
                 AuthenticatedUserLiteral.class,
                 Secured.class
             )
-            .addClasses(
-                Initializer.class
+            .addClasses(TestDataInitializer.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
@@ -206,13 +212,15 @@ public class JwtAuthTest {
 
     @Test
     @RunAsClient
-    public void testGetPostsWithoutAuthentication() throws MalformedURLException {
+    public void testAddPostWithoutAuthentication() throws MalformedURLException {
 
         LOG.log(Level.INFO, "base url @{0}", base);
 
+        PostForm newPostForm = Fixtures.newPostForm(TITLE, CONTENT);
+
         //get all posts
         final WebTarget targetGetAll = client.target(URI.create(new URL(base, "api/posts").toExternalForm()));
-        final Response resGetAll = targetGetAll.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
+        final Response resGetAll = targetGetAll.request().post(Entity.json(newPostForm));
         assertEquals(401, resGetAll.getStatus());
 
         //You have to close the response manually... issue# RESTEASY-1120
@@ -246,7 +254,7 @@ public class JwtAuthTest {
         PostDetail[] posts = resGetAll.readEntity(PostDetail[].class);
 
         assertTrue(posts.length == 0);
-                //You have to close the response manually... issue# RESTEASY-1120
+        //You have to close the response manually... issue# RESTEASY-1120
         //see https://issues.jboss.org/browse/RESTEASY-1120
         resGetAll.close();
 

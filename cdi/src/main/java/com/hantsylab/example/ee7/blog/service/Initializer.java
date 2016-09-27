@@ -7,9 +7,11 @@ package com.hantsylab.example.ee7.blog.service;
 
 import com.hantsylab.example.ee7.blog.crypto.Crypto;
 import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
 import com.hantsylab.example.ee7.blog.domain.model.Post;
 import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
+import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import javax.annotation.PostConstruct;
@@ -33,6 +35,9 @@ public class Initializer {
 
     @Inject
     PostRepository posts;
+
+    @Inject
+    CommentRepository comments;
 
     @Inject
     @Crypto(value = Crypto.Type.BCRYPT)
@@ -73,13 +78,21 @@ public class Initializer {
             .build();
         post2.setCreatedBy("test");
         posts.save(post2);
-        
+
         Post post3 = Post.builder()
             .title("Getting started with Angular2")
             .content("Content of Getting started with Angular2")
             .build();
         post3.setCreatedBy("test");
         posts.save(post3);
+
+        Comment comment = Comment.builder()
+            .content("Awesome!")
+            .build();
+
+        comment.setPost(post3);
+        comment.setCreatedBy("test");
+        comments.save(comment);
 
     }
 

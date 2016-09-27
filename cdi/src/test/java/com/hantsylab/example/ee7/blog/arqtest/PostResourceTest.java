@@ -8,6 +8,7 @@ import com.hantsylab.example.ee7.blog.api.AuthenticationExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.CommentResource;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
+import com.hantsylab.example.ee7.blog.api.PasswordMismatchedExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.PostResource;
 import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.UserResource;
@@ -41,8 +42,11 @@ import com.hantsylab.example.ee7.blog.service.CommentDetail;
 import com.hantsylab.example.ee7.blog.service.CommentForm;
 import com.hantsylab.example.ee7.blog.service.Credentials;
 import com.hantsylab.example.ee7.blog.service.IdToken;
+import com.hantsylab.example.ee7.blog.service.PasswordForm;
+import com.hantsylab.example.ee7.blog.service.PasswordMismatchedException;
 import com.hantsylab.example.ee7.blog.service.PostDetail;
 import com.hantsylab.example.ee7.blog.service.PostForm;
+import com.hantsylab.example.ee7.blog.service.ProfileForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
 import com.hantsylab.example.ee7.blog.service.SignupForm;
 import com.hantsylab.example.ee7.blog.service.UserDetail;
@@ -70,10 +74,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -119,7 +123,7 @@ public class PostResourceTest {
                 Role.class,
                 User.class,
                 User_.class,
-                UserRepository.class//,
+                UserRepository.class
             )
             //add service classes
             .addClasses(
@@ -136,7 +140,9 @@ public class PostResourceTest {
                 PostForm.class,
                 PostDetail.class,
                 CommentForm.class,
-                CommentDetail.class
+                CommentDetail.class,
+                PasswordForm.class, 
+                ProfileForm.class
             )
             //Add JAXRS resources classes
             .addClasses(
@@ -151,6 +157,8 @@ public class PostResourceTest {
                 CustomBeanParamProvider.class,
                 AuthenticationException.class,
                 AuthenticationExceptionMapper.class,
+                PasswordMismatchedException.class,
+                PasswordMismatchedExceptionMapper.class,
                 AuthResource.class
             )
             .addPackage(PlainPasswordEncoder.class.getPackage())
@@ -167,8 +175,7 @@ public class PostResourceTest {
                 AuthenticatedUserLiteral.class,
                 Secured.class
             )
-            .addClasses(
-                Initializer.class
+            .addClasses(TestDataInitializer.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.

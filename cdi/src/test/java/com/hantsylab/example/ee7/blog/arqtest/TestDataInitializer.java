@@ -22,9 +22,9 @@ import javax.inject.Inject;
  */
 @Singleton
 @Startup
-public class Initializer {
+public class TestDataInitializer {
 
-    public Initializer() {
+    public TestDataInitializer() {
     }
 
     @Inject

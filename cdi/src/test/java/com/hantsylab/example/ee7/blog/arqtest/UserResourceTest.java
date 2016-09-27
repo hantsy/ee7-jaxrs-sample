@@ -7,6 +7,7 @@ import com.hantsylab.example.ee7.blog.api.AuthResource;
 import com.hantsylab.example.ee7.blog.api.AuthenticationExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.CustomBeanParamProvider;
 import com.hantsylab.example.ee7.blog.api.JacksonConfig;
+import com.hantsylab.example.ee7.blog.api.PasswordMismatchedExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.UserResource;
 import com.hantsylab.example.ee7.blog.api.ResourceNotFoundExceptionMapper;
 import com.hantsylab.example.ee7.blog.api.UsernameWasTakenExceptionMapper;
@@ -16,9 +17,15 @@ import com.hantsylab.example.ee7.blog.crypto.PasswordEncoder;
 import com.hantsylab.example.ee7.blog.crypto.bcrypt.BCryptPasswordEncoder;
 import com.hantsylab.example.ee7.blog.crypto.plain.PlainPasswordEncoder;
 import com.hantsylab.example.ee7.blog.domain.convert.LocalDateConverter;
+import com.hantsylab.example.ee7.blog.domain.model.Comment;
+import com.hantsylab.example.ee7.blog.domain.model.Comment_;
+import com.hantsylab.example.ee7.blog.domain.model.Post;
+import com.hantsylab.example.ee7.blog.domain.model.Post_;
 import com.hantsylab.example.ee7.blog.domain.model.Role;
 import com.hantsylab.example.ee7.blog.domain.model.User;
 import com.hantsylab.example.ee7.blog.domain.model.User_;
+import com.hantsylab.example.ee7.blog.domain.repository.CommentRepository;
+import com.hantsylab.example.ee7.blog.domain.repository.PostRepository;
 import com.hantsylab.example.ee7.blog.domain.repository.UserRepository;
 import com.hantsylab.example.ee7.blog.domain.support.AbstractEntity;
 import com.hantsylab.example.ee7.blog.security.AuthenticatedUser;
@@ -29,8 +36,13 @@ import com.hantsylab.example.ee7.blog.security.filter.AuthenticationFilter;
 import com.hantsylab.example.ee7.blog.security.filter.AuthorizationFilter;
 import com.hantsylab.example.ee7.blog.security.jwt.JwtHelper;
 import com.hantsylab.example.ee7.blog.service.AuthenticationException;
+import com.hantsylab.example.ee7.blog.service.CommentDetail;
+import com.hantsylab.example.ee7.blog.service.CommentForm;
 import com.hantsylab.example.ee7.blog.service.Credentials;
 import com.hantsylab.example.ee7.blog.service.IdToken;
+import com.hantsylab.example.ee7.blog.service.PasswordForm;
+import com.hantsylab.example.ee7.blog.service.PasswordMismatchedException;
+import com.hantsylab.example.ee7.blog.service.ProfileForm;
 import com.hantsylab.example.ee7.blog.service.UserDetail;
 import com.hantsylab.example.ee7.blog.service.UserForm;
 import com.hantsylab.example.ee7.blog.service.ResourceNotFoundException;
@@ -58,10 +70,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -99,10 +111,13 @@ public class UserResourceTest {
                 Role.class,
                 User.class,
                 User_.class,
-                UserRepository.class//,
-            //                Comment.class,
-            //                Comment_.class,
-            //                CommentRepository.class
+                Post.class,
+                Post_.class,
+                PostRepository.class,
+                UserRepository.class,
+                Comment.class,
+                Comment_.class,
+                CommentRepository.class
             )
             //add service classes
             .addClasses(
@@ -113,9 +128,12 @@ public class UserResourceTest {
                 UserDetail.class,
                 Credentials.class,
                 SignupForm.class,
-                IdToken.class
-            //                CommentForm.class,
-            //                CommentDetail.class
+                IdToken.class,
+                CommentForm.class,
+                PasswordMismatchedException.class,
+                CommentDetail.class,
+                ProfileForm.class,
+                PasswordForm.class
             )
             //Add JAXRS resources classes
             .addClasses(
@@ -128,6 +146,7 @@ public class UserResourceTest {
                 UsernameWasTakenExceptionMapper.class,
                 AuthenticationException.class,
                 AuthenticationExceptionMapper.class,
+                PasswordMismatchedExceptionMapper.class,
                 ValidationError.class,
                 CustomBeanParamProvider.class
             )
@@ -145,8 +164,7 @@ public class UserResourceTest {
                 AuthenticatedUserLiteral.class,
                 Secured.class
             )
-            .addClasses(
-                Initializer.class
+            .addClasses(TestDataInitializer.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
@@ -206,7 +224,7 @@ public class UserResourceTest {
         final Response resGetAll = targetGetAll.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, resGetAll.getStatus());
         UserDetail[] results = resGetAll.readEntity(UserDetail[].class);
-        
+
         LOG.log(Level.INFO, "get all users @{0}", results);
         assertTrue(results != null);
         assertTrue(results.length == 2);

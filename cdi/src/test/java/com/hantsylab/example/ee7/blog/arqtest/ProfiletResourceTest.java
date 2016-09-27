@@ -80,6 +80,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -176,8 +178,7 @@ public class ProfiletResourceTest {
                 AuthenticatedUserLiteral.class,
                 Secured.class
             )
-            .addClasses(
-                Initializer.class
+            .addClasses(TestDataInitializer.class
             )
             // .addAsResource("test-log4j.properties", "log4j.properties")
             //Add JPA persistence configration.
@@ -254,7 +255,7 @@ public class ProfiletResourceTest {
     @RunAsClient
     public void testGetMyProfile() throws MalformedURLException {
 
-        String location = "api/me/profile";
+        String location = "api/me";
 
         final WebTarget targetGet = client.target(URI.create(new URL(base, location).toExternalForm()));
         Response responseGet = targetGet.request().accept(MediaType.APPLICATION_JSON_TYPE).get();
