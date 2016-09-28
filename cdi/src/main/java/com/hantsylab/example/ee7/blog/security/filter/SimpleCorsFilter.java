@@ -20,7 +20,7 @@ import javax.ws.rs.ext.Provider;
  *
  * @author hantsy
  */
-@Provider
+//@Provider
 @PreMatching
 public class SimpleCorsFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
