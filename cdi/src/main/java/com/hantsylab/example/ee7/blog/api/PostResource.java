@@ -96,7 +96,9 @@ public class PostResource {
     @Secured({Role.USER, Role.ADMIN})
     public Response createCommentsOfPost(@PathParam("id") Long postId, @Valid CommentForm form) {
         CommentDetail saved = service.createCommentOfPost(postId, form);
-        return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId())).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("comments/{id}").build(saved.getId()))
+            .entity(saved)
+            .build();
     }
 
     @PUT
@@ -110,7 +112,7 @@ public class PostResource {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("{id}/comments/{commentId}")
     public Response deleteComment(@PathParam("id") Long id,
         @PathParam("commentId") Long commentId) {
         service.deleteCommentById(commentId);
