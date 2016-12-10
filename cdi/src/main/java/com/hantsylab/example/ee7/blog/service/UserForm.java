@@ -4,11 +4,13 @@ import com.hantsylab.example.ee7.blog.domain.model.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -26,6 +28,9 @@ public class UserForm implements Serializable{
     private String firstName;
 
     private String lastName;
+    
+    @Email
+    private String email;
 
     @NotBlank
     @NonNull

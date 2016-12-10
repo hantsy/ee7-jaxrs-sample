@@ -51,6 +51,7 @@ public class Initializer {
             .lastName("Bai")
             .username("test")
             .password(encoder.encode("test123"))
+            .email("test@test.com")
             .role(Role.USER)
             .build();
         users.save(user);
@@ -60,6 +61,7 @@ public class Initializer {
             .lastName("Bar")
             .username("admin")
             .password(encoder.encode("admin123"))
+            .email("admin@admin.com")
             .role(Role.ADMIN)
             .build();
 
@@ -87,7 +89,7 @@ public class Initializer {
         posts.save(post3);
 
         Comment comment = Comment.builder()
-            .content("Awesome!")
+            .content("Awesome!\n Good post.")
             .build();
 
         comment.setPost(post3);

@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -49,6 +50,10 @@ public class User extends AbstractEntity {
     @Column(name = "password")
     @NotBlank
     private String password;
+    
+    @Column(name = "email")
+    @Email
+    private String email;
 
     @Column(name = "is_active")
     private boolean active = false;
