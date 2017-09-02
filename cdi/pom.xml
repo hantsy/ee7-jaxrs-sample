@@ -47,14 +47,14 @@ language governing permissions and limitations under the License. -->
         <version.org.wildfly.arquillian>2.0.0.Final</version.org.wildfly.arquillian>
         <version.jackson>2.6.3</version.jackson>
         <version.deltaspike>1.7.1</version.deltaspike>
-        <version.hibernate>5.2.2.Final</version.hibernate>
+        <version.hibernate>5.2.10.Final</version.hibernate>
 
         <!-- Apache components versions -->
         <version.httpclient>4.5</version.httpclient>
         <version.commons-io>2.4</version.commons-io>
 		
         <!-- Test -->
-        <version.mockito>2.0.52-beta</version.mockito>
+        <version.mockito>2.9.0</version.mockito>
 
         <!-- other plugin versions -->
         <version.compiler.plugin>3.5.1</version.compiler.plugin>
