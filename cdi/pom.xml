@@ -120,6 +120,12 @@ language governing permissions and limitations under the License. -->
     <dependencies>
         
         <dependency>
+            <groupId>org.jboss.spec.javax.enterprise.concurrent</groupId>
+            <artifactId>jboss-concurrency-api_1.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>javax.transaction-api</artifactId>
             <version>1.2</version>
@@ -127,7 +133,7 @@ language governing permissions and limitations under the License. -->
         </dependency>
         
         <!-- Apache DeltaSpike-->
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
             <scope>compile</scope>
@@ -139,7 +145,7 @@ language governing permissions and limitations under the License. -->
             <scope>runtime</scope>
         </dependency>-->
                
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-api</artifactId>
             <scope>compile</scope>
@@ -151,7 +157,7 @@ language governing permissions and limitations under the License. -->
             <scope>runtime</scope>
         </dependency>-->
 
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-api</artifactId>
             <scope>compile</scope>
@@ -365,6 +371,7 @@ language governing permissions and limitations under the License. -->
             <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -651,7 +658,7 @@ language governing permissions and limitations under the License. -->
                 </dependency>
             </dependencies>
         </profile>
-<!--        <profile>
+        <!--        <profile>
             <id>raml</id>
             <build>
                 <plugins>
