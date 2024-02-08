@@ -1,0 +1,680 @@
+repo_name: hantsy/ee7-jaxrs-sample
+report_id: 1f78ca40c933cbab0014f7791252d193
+version: 0.1
+repo_type: Public
+timestamp: '2024-01-31T08:44:17+00:00'
+requested_by: hantsy
+provider: github
+branch: master
+detected_tools_count: 29
+tools:
+- name: Java
+  description: A concurrent, class-based, object-oriented, language specifically designed
+    to have as few implementation dependencies as possible
+  website_url: https://www.java.com
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample
+  detection_source: Repo Metadata
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample
+  detection_source: Repo Metadata
+- name: JBoss
+  description: An open source Java EE-based application server
+  website_url: https://developers.redhat.com/products/eap
+  open_source: false
+  hosted_saas: false
+  category: Application Hosting
+  sub_category: Web Servers
+  image_url: https://img.stackshare.io/service/2188/unnamed.jpg
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-06-14 04:40:58.000000000 Z
+- name: JUnit
+  description: A programmer-oriented testing framework for Java
+  website_url: http://junit.org/
+  license: EPL-1.0
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Testing Frameworks
+  image_url: https://img.stackshare.io/service/2020/874086.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-06-14 04:40:58.000000000 Z
+- name: Mockito
+  description: Tasty mocking framework for unit tests in Java
+  website_url: https://site.mockito.org/
+  version: 2.9.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Testing Frameworks
+  image_url: https://img.stackshare.io/service/2021/4y634TJm_400x400.jpg
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-09-02 06:14:08.000000000 Z
+- name: com.fasterxml.jackson.core:jackson-databind
+  description: 'General data-binding functionality for Jackson: works on core streaming
+    API'
+  version: 2.6.3
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-08-17 13:07:33.000000000 Z
+  vulnerabilities:
+  - name: Arbitrary Code Execution in jackson-databind
+    cve_id: CVE-2018-14718
+    cve_url: https://github.com/advisories/GHSA-645p-88qh-w398
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.3
+  - name: Arbitrary Code Execution in jackson-databind
+    cve_id: CVE-2018-14719
+    cve_url: https://github.com/advisories/GHSA-4gq5-ch57-c2mg
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.7.9.5
+  - name: 'FasterXML jackson-databind allows unauthenticated remote code execution '
+    cve_id: CVE-2018-7489
+    cve_url: https://github.com/advisories/GHSA-cggj-fvv3-cqwv
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.8.11.1
+  - name: Improper Input Validation in jackson-databind
+    cve_id: CVE-2019-17267
+    cve_url: https://github.com/advisories/GHSA-f3j5-rmmp-3fc5
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.8.11.5
+  - name: jackson-databind is vulnerable to a deserialization flaw
+    cve_id: CVE-2017-7525
+    cve_url: https://github.com/advisories/GHSA-qxxx-2pp7-5hmx
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.1
+  - name: Polymorphic Typing in FasterXML jackson-databind
+    cve_id: CVE-2019-16942
+    cve_url: https://github.com/advisories/GHSA-mx7p-6679-8g3q
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.9.10.1
+  - name: Deserialization of Untrusted Data in jackson-databind
+    cve_id: CVE-2020-8840
+    cve_url: https://github.com/advisories/GHSA-4w82-r329-3q67
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.4
+  - name: jackson-databind mishandles the interaction between serialization gadgets
+      and typing
+    cve_id: CVE-2020-9548
+    cve_url: https://github.com/advisories/GHSA-p43x-xfjf-5jhr
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.7.9.7
+  - name: jackson-databind mishandles the interaction between serialization gadgets
+      and typing
+    cve_id: CVE-2020-9547
+    cve_url: https://github.com/advisories/GHSA-q93h-jc49-78gg
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.7.9.7
+  - name: Polymorphic Typing issue in FasterXML jackson-databind
+    cve_id: CVE-2019-14540
+    cve_url: https://github.com/advisories/GHSA-h822-r4r5-v8jg
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.3
+  - name: Polymorphic Typing issue in FasterXML jackson-databind
+    cve_id: CVE-2019-16335
+    cve_url: https://github.com/advisories/GHSA-85cw-hj65-qqv9
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.3
+  - name: Deserialization of Untrusted Data in jackson-databind
+    cve_id: CVE-2019-20330
+    cve_url: https://github.com/advisories/GHSA-gww7-p5w4-wrfv
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.4
+  - name: Deserialization of Untrusted Data in jackson-databind
+    cve_id: CVE-2018-11307
+    cve_url: https://github.com/advisories/GHSA-qr7j-h6gg-jmgc
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.7.9.4
+  - name: jackson-databind vulnerable to remote code execution due to incorrect deserialization
+      and blocklist bypass
+    cve_id: CVE-2017-17485
+    cve_url: https://github.com/advisories/GHSA-rfx6-vp9g-rh7v
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.8.11
+  - name: jackson-databind polymorphic typing issue
+    cve_id: CVE-2019-17531
+    cve_url: https://github.com/advisories/GHSA-gjmw-vf9h-g25v
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.3
+  - name: jackson-databind polymorphic typing issue
+    cve_id: CVE-2019-16943
+    cve_url: https://github.com/advisories/GHSA-fmmc-742q-jg75
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.6.7.3
+  - name: Deserialization of untrusted data in FasterXML jackson-databind
+    cve_id: CVE-2019-14379
+    cve_url: https://github.com/advisories/GHSA-6fpp-rgj9-8rwc
+    detected_date: Aug 22
+    severity: critical
+    first_patched: 2.7.9.6
+  - name: Deeply nested json in jackson-databind
+    cve_id: CVE-2020-36518
+    cve_url: https://github.com/advisories/GHSA-57j2-w4cx-62h2
+    detected_date: Mar 23
+    severity: high
+    first_patched: 2.12.6.1
+  - name: Deserialization of Untrusted Data in jackson-databind
+    cve_id: CVE-2018-5968
+    cve_url: https://github.com/advisories/GHSA-w3f4-3q6j-rh82
+    detected_date: Aug 22
+    severity: high
+    first_patched: 
+  - name: jackson-databind before 2.9.10.4 vulnerable to unsafe deserialization
+    cve_id: CVE-2020-10650
+    cve_url: https://github.com/advisories/GHSA-rpr3-cw39-3pxh
+    detected_date: Jul 16
+    severity: high
+    first_patched: 2.9.10.4
+  - name: Deserialization of untrusted data in FasterXML jackson-databind
+    cve_id: CVE-2019-14439
+    cve_url: https://github.com/advisories/GHSA-gwp4-hfv6-p7hw
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.6.7.3
+  - name: Polymorphic deserialization of malicious object in jackson-databind
+    cve_id: CVE-2019-14892
+    cve_url: https://github.com/advisories/GHSA-cf6r-3wgc-h863
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.6.7.3
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-24750
+    cve_url: https://github.com/advisories/GHSA-qjw2-hr98-qgfh
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: XML External Entity (XXE) Injection in Jackson Databind
+    cve_id: CVE-2020-25649
+    cve_url: https://github.com/advisories/GHSA-288c-cq4h-88gq
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.6.7.4
+  - name: Serialization gadget exploit in jackson-databind
+    cve_id: CVE-2020-35728
+    cve_url: https://github.com/advisories/GHSA-5r5r-6hpj-8gg9
+    detected_date: Nov 22
+    severity: high
+    first_patched: 2.9.10.8
+  - name: jackson-databind mishandles the interaction between serialization gadgets
+      and typing
+    cve_id: CVE-2020-10673
+    cve_url: https://github.com/advisories/GHSA-fqwf-pjwf-7vqv
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.6.7.4
+  - name: jackson-databind Deserialization of Untrusted Data vulnerability
+    cve_id: CVE-2018-12022
+    cve_url: https://github.com/advisories/GHSA-cjjf-94ff-43w7
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.7.9.4
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36181
+    cve_url: https://github.com/advisories/GHSA-cvm9-fjm9-3572
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36186
+    cve_url: https://github.com/advisories/GHSA-v585-23hc-c647
+    detected_date: Jan 18
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Code Injection in jackson-databind
+    cve_id: CVE-2020-24616
+    cve_url: https://github.com/advisories/GHSA-h3cw-g4mq-c5x2
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.6
+  - name: Serialization gadgets exploit in jackson-databind
+    cve_id: CVE-2020-35490
+    cve_url: https://github.com/advisories/GHSA-wh8g-3j2c-rqj5
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Serialization gadgets exploit in jackson-databind
+    cve_id: CVE-2020-35491
+    cve_url: https://github.com/advisories/GHSA-r3gr-cxrf-hg25
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36182
+    cve_url: https://github.com/advisories/GHSA-89qr-369f-5m5x
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36179
+    cve_url: https://github.com/advisories/GHSA-9gph-22xh-8x98
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36185
+    cve_url: https://github.com/advisories/GHSA-8w26-6f25-cm9x
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36180
+    cve_url: https://github.com/advisories/GHSA-8c4j-34r4-xr8g
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36184
+    cve_url: https://github.com/advisories/GHSA-m6x4-97wx-4q27
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36183
+    cve_url: https://github.com/advisories/GHSA-9m6f-7xcq-8vf8
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36188
+    cve_url: https://github.com/advisories/GHSA-f9xh-2qgp-cq57
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36187
+    cve_url: https://github.com/advisories/GHSA-r695-7vr9-jgc2
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.9.10.8
+  - name: Unsafe Deserialization in jackson-databind
+    cve_id: CVE-2020-36189
+    cve_url: https://github.com/advisories/GHSA-vfqx-33qm-g869
+    detected_date: Jan 28
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Information exposure in FasterXML jackson-databind
+    cve_id: CVE-2019-12086
+    cve_url: https://github.com/advisories/GHSA-5ww9-j83m-q7qx
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.9.9
+  - name: Uncontrolled Resource Consumption in FasterXML jackson-databind
+    cve_id: CVE-2022-42004
+    cve_url: https://github.com/advisories/GHSA-rgv9-q543-rqg4
+    detected_date: Oct 5
+    severity: high
+    first_patched: 2.12.7.1
+  - name: Uncontrolled Resource Consumption in Jackson-databind
+    cve_id: CVE-2022-42003
+    cve_url: https://github.com/advisories/GHSA-jjjh-jjxp-wpff
+    detected_date: Oct 5
+    severity: high
+    first_patched: 2.12.7.1
+  - name: Deserialization of untrusted data in jackson-databind
+    cve_id: CVE-2021-20190
+    cve_url: https://github.com/advisories/GHSA-5949-rw7g-wx7w
+    detected_date: Aug 22
+    severity: high
+    first_patched: 2.6.7.5
+  - name: Deserialization of Untrusted Data in FasterXML jackson-databind
+    cve_id: CVE-2019-12384
+    cve_url: https://github.com/advisories/GHSA-mph4-vhrx-mv67
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 2.9.9.1
+  - name: Deserialization of untrusted data in FasterXML jackson-databind
+    cve_id: CVE-2019-12814
+    cve_url: https://github.com/advisories/GHSA-cmfg-87vq-g5g4
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 2.9.9.1
+- name: com.fasterxml.jackson.datatype:jackson-datatype-jsr310
+  description: Add-on module to support JSR-310
+  version: 2.6.3
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-07-30 13:45:17.000000000 Z
+  vulnerabilities:
+  - name: Moderate severity vulnerability that affects com.fasterxml.jackson.datatype:jackson-datatype-jsr353
+    cve_id: CVE-2018-1000873
+    cve_url: https://github.com/advisories/GHSA-h4x4-5qp2-wp46
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 2.9.8
+- name: commons-io:commons-io
+  description: The Apache Commons IO library contains utility classes
+  version: '2.4'
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-07-28 09:43:45.000000000 Z
+  vulnerabilities:
+  - name: Path Traversal and Improper Input Validation in Apache Commons IO
+    cve_id: CVE-2021-29425
+    cve_url: https://github.com/advisories/GHSA-gwrp-pvrq-jmwv
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: '2.7'
+- name: io.jsonwebtoken:jjwt
+  description: 'Java JWT: JSON Web Token for Java and Android'
+  version: 0.6.0
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-07-04 14:26:29.000000000 Z
+- name: javax.enterprise:cdi-api
+  description: APIs for CDI
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: javax.transaction:javax.transaction-api
+  description: Project GlassFish Java Transaction API
+  version: '1.2'
+  license: GPL-2.0-with-classpath-exception
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: junit:junit
+  description: JUnit is a unit testing framework for Java
+  license: EPL-1.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2016-07-05 08:09:26.000000000 Z
+- name: org.apache.commons:commons-lang3
+  description: Apache Commons Lang
+  version: '3.4'
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.apache.httpcomponents:httpclient
+  description: Apache HttpComponents Client
+  version: '4.5'
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+  vulnerabilities:
+  - name: Cross-site scripting in Apache HttpClient
+    cve_id: CVE-2020-13956
+    cve_url: https://github.com/advisories/GHSA-7r82-7xv7-xcpj
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 4.5.13
+- name: org.hibernate.javax.persistence:hibernate-jpa-2.1-api
+  description: Clean-room definition of JPA APIs intended for use in developing Hibernate
+    JPA implementation
+  license: EPL-2.0,AAL
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.hibernate:hibernate-core
+  description: Hibernate's core ORM functionality
+  license: LGPL-2.0-only,GPL-3.0-or-later
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.hibernate:hibernate-jpamodelgen
+  description: Annotation Processor to generate JPA 2 static metamodel classes
+  license: LGPL-2.0-only,GPL-3.0-or-later
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.hibernate:hibernate-validator
+  description: Hibernate's Bean Validation
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.hibernate:hibernate-validator-annotation-processor
+  description: Hibernate Validator - Bean Validation 2.0
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.arquillian.junit:arquillian-junit-container
+  description: JUnit Container Implementation for the Arquillian Project
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.arquillian.protocol:arquillian-protocol-servlet
+  description: Protocol handler for communicating using a servlet / http following
+    the Servlet 2.5/ 2.5/.x spec
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.resteasy:resteasy-client
+  description: Resteasy
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.resteasy:resteasy-jackson2-provider
+  description: REST and JAXRS
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.resteasy:resteasy-jaxrs
+  description: REST and JAXRS
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-depchain
+  description: Single-POM Definition to export the ShrinkWrap Resolver artifacts in
+    proper scope
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec
+  description: 'JSR 250: Common Annotations for the Java'
+  license: CDDL-1.1,GPL-2.0-with-classpath-exception
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.mockito:mockito-core
+  description: Mockito mock objects library core API and implementation
+  version: 2.9.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.modelmapper:modelmapper
+  description: Simple, Intelligent, Object Mapping
+  version: 0.7.5
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
+- name: org.projectlombok:lombok
+  description: 'Spice up your java: Automatic Resource Management'
+  version: 1.16.8
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/hantsy/ee7-jaxrs-sample/blob/master/cdi/pom.xml
+  detection_source: cdi/pom.xml
+  last_updated_by: hantsy
+  last_updated_on: 2017-10-18 15:17:11.000000000 Z
